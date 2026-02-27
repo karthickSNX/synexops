@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYNEXOPS | Data Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg, #f9fbff 0%, #eef3ff 100%);
+    color:#1e293b;
+    overflow-x:hidden;
+}
+
+/* NAV */
+.nav{
+    padding:25px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo-text{
+    font-weight:700;
+    font-size:1.4rem;
+    letter-spacing:1px;
+}
+
+.nav-links a{
+    margin-left:30px;
+    text-decoration:none;
+    color:#64748b;
+    font-weight:500;
+}
+
+.nav-links a:hover{
+    color:#2563eb;
+}
+
+/* HERO */
+.hero{
+    padding:120px 8%;
+    display:flex;
+    align-items:center;
+    min-height:90vh;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:100%;
+    height:150%;
+    z-index:0;
+    background:
+        radial-gradient(circle at 65% 50%, rgba(37,99,235,0.25) 0%, rgba(37,99,235,0.18) 25%, rgba(37,99,235,0.10) 45%, rgba(37,99,235,0.04) 65%, transparent 85%),
+        radial-gradient(circle at 75% 60%, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.10) 35%, transparent 75%);
+    filter: blur(60px);
+    pointer-events:none;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    right:0;
+    top:0;
+    width:50%;
+    height:100%;
+    background:url("hero-illustration.png") no-repeat center right;
+    background-size:cover;
+    opacity:0.95;
+
+    -webkit-mask-image:
+        linear-gradient(to left, black 75%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+    -webkit-mask-composite: source-in;
+
+    mask-image:
+        linear-gradient(to left, black 75%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+    mask-composite: intersect;
+
+    pointer-events:none;
+}
+
+/* HERO TEXT */
+.hero-text{
+    max-width:620px;
+    position:relative;
+    z-index:2;
+}
+
+.hero-text h1{
+    font-size:3.2rem;
+    line-height:1.12;
+    letter-spacing:-0.6px;
+    font-weight:700;
+    margin-bottom:24px;
+}
+
+.hero-text h1 .highlight{
+    color:#2563eb;
+}
+
+.hero-text h1 .line-break{
+    display:block;
+}
+
+.hero-text p{
+    font-size:1.2rem;
+    line-height:1.65;
+    margin-bottom:36px;
+    color:#334155;
+}
+
+.hero-text a{
+    display:inline-block;
+    padding:14px 28px;
+    background:#2563eb;
+    color:white;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* SECTION */
+.section{
+    padding:100px 8%;
+    position:relative;
+}
+
+.section h2{
+    text-align:center;
+    font-size:2.3rem;
+    font-weight:700;
+    letter-spacing:-0.4px;
+    margin-bottom:60px;
+}
+
+/* INSIGHTS GLOW */
+#insights::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    width:130%;
+    height:160%;
+    z-index:0;
+    background:
+        radial-gradient(circle at 50% 40%, rgba(37,99,235,0.16) 0%, rgba(37,99,235,0.08) 35%, rgba(37,99,235,0.04) 55%, transparent 75%),
+        radial-gradient(circle at 60% 60%, rgba(59,130,246,0.08) 0%, transparent 70%);
+    filter: blur(80px);
+    pointer-events:none;
+}
+
+#insights > *{
+    position:relative;
+    z-index:2;
+}
+
+/* GRID */
+.services{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:40px;
+}
+
+@media (max-width:1100px){
+    .services{
+        grid-template-columns:repeat(2, 1fr);
+    }
+}
+
+@media (max-width:700px){
+    .services{
+        grid-template-columns:1fr;
+    }
+}
+
+/* CARDS */
+.card{
+    display:flex;
+    flex-direction:column;
+    padding:42px;
+    border-radius:22px;
+    backdrop-filter:blur(20px);
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.65), rgba(240,246,255,0.45)),
+        radial-gradient(circle at top left, rgba(59,130,246,0.12), transparent 65%);
+    border:1px solid rgba(148,163,184,0.25);
+    transition:all 0.35s ease;
+    text-decoration:none;
+    color:inherit;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:
+        0 25px 50px rgba(37,99,235,0.18),
+        0 10px 25px rgba(0,0,0,0.06);
+}
+
+.card-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+}
+
+.tech-icon{
+    width:44px;
+    height:44px;
+    object-fit:contain;
+}
+
+.tech-card h3{
+    font-size:1.65rem;
+    font-weight:700;
+    letter-spacing:-0.5px;
+    color:#0f172a;
+}
+
+.card p{
+    font-size:0.98rem;
+    line-height:1.7;
+    color:#475569;
+}
+
+/* PROCESS */
+.process-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:40px;
+    text-align:center;
+}
+
+@media (max-width:1000px){
+    .process-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media (max-width:600px){
+    .process-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.process-step h3{
+    font-size:1.2rem;
+    margin-bottom:12px;
+    font-weight:600;
+}
+
+.process-step p{
+    font-size:0.95rem;
+    color:#475569;
+    line-height:1.6;
+}
+
+/* TECH */
+.tech{
+    text-align:center;
+    max-width:800px;
+    margin:0 auto;
+}
+
+.tech p{
+    font-size:1rem;
+    color:#475569;
+    line-height:1.8;
+}
+
+/* CONTACT */
+.contact{
+    text-align:center;
+}
+
+.contact a{
+    display:inline-block;
+    margin-top:20px;
+    padding:14px 28px;
+    background:#1e293b;
+    color:white;
+    border-radius:30px;
+    text-decoration:none;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    color:#94a3b8;
+    font-size:0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+    <div class="logo-text">SYNEXOPS</div>
+    <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#insights">Insights</a>
+        <a href="#contact">Contact</a>
+    </div>
+</div>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>
+            Modern <span class="highlight">Data Systems</span>
+            <span class="line-break">for Growing Teams</span>
+        </h1>
+        <p>
+            We design scalable platforms, analytics workflows, and intelligent
+            data solutions that turn complexity into clarity.
+        </p>
+        <a href="#contact">Get in Touch</a>
+    </div>
+</section>
+
+<section class="section" id="services">
+    <h2>Our Expertise</h2>
+    <div class="services">
+        <div class="card">
+            <h3>Data Strategy & Architecture</h3>
+            <p>Designing scalable data ecosystems aligned with business growth.</p>
+        </div>
+        <div class="card">
+            <h3>Data Platform Implementation</h3>
+            <p>Building and deploying production-grade data platforms across cloud environments.</p>
+        </div>
+        <div class="card">
+            <h3>Analytics & Insights</h3>
+            <p>Transforming raw data into meaningful decision frameworks.</p>
+        </div>
+        <div class="card">
+            <h3>Workflow & Pipeline Design</h3>
+            <p>Engineering reliable data movement and orchestration systems.</p>
+        </div>
+        <div class="card">
+            <h3>Business Intelligence</h3>
+            <p>Delivering clear visibility through modern reporting solutions.</p>
+        </div>
+        <div class="card">
+            <h3>Data Governance</h3>
+            <p>Establishing consistency, quality, and reliability practices.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="process">
+    <h2>How We Work</h2>
+    <div class="process-grid">
+        <div class="process-step">
+            <h3>Discovery</h3>
+            <p>We assess existing systems, goals, and constraints to define a structured path forward.</p>
+        </div>
+        <div class="process-step">
+            <h3>Architecture</h3>
+            <p>We design scalable data foundations aligned with long-term growth.</p>
+        </div>
+        <div class="process-step">
+            <h3>Implementation</h3>
+            <p>We build and deploy solutions using modern engineering practices.</p>
+        </div>
+        <div class="process-step">
+            <h3>Optimization</h3>
+            <p>We continuously refine performance, cost efficiency, and reliability.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Technology Experience</h2>
+    <div class="tech">
+        <p>
+            Our team has experience working with modern cloud platforms and data infrastructure technologies,
+            including AWS, Azure, Databricks, and related ecosystem tools.
+        </p>
+    </div>
+</section>
+
+<section class="section" id="insights">
+    <h2>Insights</h2>
+    <div class="services">
+
+        <a href="insights/kafka.html" class="card tech-card">
+            <div class="card-header">
+                <img src="assets/kafka-logo.svg" alt="Apache Kafka Logo" class="tech-icon">
+                <h3>Apache Kafka</h3>
+            </div>
+            <p>Event streaming architecture and distributed real-time data systems at scale.</p>
+        </a>
+
+        <a href="insights/spark.html" class="card tech-card">
+            <div class="card-header">
+                <img src="assets/spark-logo.svg" alt="Apache Spark Logo" class="tech-icon">
+                <h3>Apache Spark</h3>
+            </div>
+            <p>Unified analytics engine for large-scale data processing and distributed computation.</p>
+        </a>
+
+    </div>
+</section>
+
+<section class="section contact" id="contact">
+    <h2>Let’s Build Something Scalable</h2>
+    <p>Reach out to discuss your data needs.</p>
+    <a href="mailto:contact@synexops.com">contact@synexops.com</a>
+</section>
+
+<footer>
+    © 2026 SYNEXOPS. All rights reserved.
+</footer>
+
+</body>
+</html>
