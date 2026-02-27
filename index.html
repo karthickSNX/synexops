@@ -39,6 +39,7 @@ body{
     text-decoration:none;
     color:#64748b;
     font-weight:500;
+    transition:all 0.25s ease;
 }
 
 .nav-links a:hover{
@@ -95,7 +96,6 @@ body{
     pointer-events:none;
 }
 
-/* HERO TEXT */
 .hero-text{
     max-width:620px;
     position:relative;
@@ -133,6 +133,12 @@ body{
     border-radius:30px;
     text-decoration:none;
     font-weight:600;
+    transition:all 0.3s ease;
+}
+
+.hero-text a:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 40px rgba(37,99,235,0.35);
 }
 
 /* SECTION */
@@ -179,15 +185,11 @@ body{
 }
 
 @media (max-width:1100px){
-    .services{
-        grid-template-columns:repeat(2, 1fr);
-    }
+    .services{ grid-template-columns:repeat(2, 1fr); }
 }
 
 @media (max-width:700px){
-    .services{
-        grid-template-columns:1fr;
-    }
+    .services{ grid-template-columns:1fr; }
 }
 
 /* CARDS */
@@ -213,6 +215,20 @@ body{
         0 10px 25px rgba(0,0,0,0.06);
 }
 
+.card h3{
+    font-size:1.35rem;
+    font-weight:700;
+    letter-spacing:-0.4px;
+    margin-bottom:22px;
+    color:#0f172a;
+}
+
+.card p{
+    font-size:0.98rem;
+    line-height:1.7;
+    color:#475569;
+}
+
 .card-header{
     display:flex;
     align-items:center;
@@ -233,12 +249,6 @@ body{
     color:#0f172a;
 }
 
-.card p{
-    font-size:0.98rem;
-    line-height:1.7;
-    color:#475569;
-}
-
 /* PROCESS */
 .process-grid{
     display:grid;
@@ -248,15 +258,11 @@ body{
 }
 
 @media (max-width:1000px){
-    .process-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+    .process-grid{ grid-template-columns:repeat(2,1fr); }
 }
 
 @media (max-width:600px){
-    .process-grid{
-        grid-template-columns:1fr;
-    }
+    .process-grid{ grid-template-columns:1fr; }
 }
 
 .process-step h3{
@@ -271,7 +277,6 @@ body{
     line-height:1.6;
 }
 
-/* TECH */
 .tech{
     text-align:center;
     max-width:800px;
@@ -284,7 +289,6 @@ body{
     line-height:1.8;
 }
 
-/* CONTACT */
 .contact{
     text-align:center;
 }
@@ -297,6 +301,12 @@ body{
     color:white;
     border-radius:30px;
     text-decoration:none;
+    transition:all 0.3s ease;
+}
+
+.contact a:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
 footer{
@@ -367,22 +377,10 @@ footer{
 <section class="section" id="process">
     <h2>How We Work</h2>
     <div class="process-grid">
-        <div class="process-step">
-            <h3>Discovery</h3>
-            <p>We assess existing systems, goals, and constraints to define a structured path forward.</p>
-        </div>
-        <div class="process-step">
-            <h3>Architecture</h3>
-            <p>We design scalable data foundations aligned with long-term growth.</p>
-        </div>
-        <div class="process-step">
-            <h3>Implementation</h3>
-            <p>We build and deploy solutions using modern engineering practices.</p>
-        </div>
-        <div class="process-step">
-            <h3>Optimization</h3>
-            <p>We continuously refine performance, cost efficiency, and reliability.</p>
-        </div>
+        <div class="process-step"><h3>Discovery</h3><p>We assess existing systems, goals, and constraints to define a structured path forward.</p></div>
+        <div class="process-step"><h3>Architecture</h3><p>We design scalable data foundations aligned with long-term growth.</p></div>
+        <div class="process-step"><h3>Implementation</h3><p>We build and deploy solutions using modern engineering practices.</p></div>
+        <div class="process-step"><h3>Optimization</h3><p>We continuously refine performance, cost efficiency, and reliability.</p></div>
     </div>
 </section>
 
