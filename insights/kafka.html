@@ -696,6 +696,55 @@ strong { font-weight:700; }
 
 
 <!-- ══════════════════════════════════════════
+     GETTING STARTED
+══════════════════════════════════════════ -->
+<div class="section" style="margin-bottom:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;">
+
+    <div class="card" style="border-left:4px solid var(--k);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--k2);margin-bottom:12px;">⚡ Getting Started — Kafka running in 60 seconds</div>
+      <p style="font-size:.87rem;color:var(--ink2);line-height:1.7;margin-bottom:12px;">The fastest way to get Kafka running locally is Docker. You need Docker Desktop installed — that's the only prerequisite.</p>
+      <div class="cb" style="font-size:.76rem;"><span class="cm"># 1. Start a Kafka broker (KRaft mode — no ZooKeeper needed)</span>
+docker run -d --name kafka \
+  -p 9092:9092 \
+  -e KAFKA_NODE_ID=1 \
+  -e KAFKA_PROCESS_ROLES=broker,controller \
+  -e KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
+  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
+  -e KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093 \
+  -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+  apache/kafka:3.7.0
+
+<span class="cm"># 2. Install the Python client</span>
+pip install confluent-kafka
+
+<span class="cm"># 3. Verify Kafka is up — create a test topic</span>
+docker exec kafka kafka-topics \
+  --bootstrap-server localhost:9092 \
+  --create --topic test --partitions 3</div>
+      <div class="callout c-tip" style="margin-top:10px;">
+        <span class="callout-icon">💡</span>
+        <span>Prefer a UI? Add <code>-p 8080:8080 provectuslabs/kafka-ui</code> to your Docker setup and open <strong>localhost:8080</strong> for a visual dashboard. Or use <a href="https://developer.confluent.io/confluent-cloud/tryfree/" target="_blank" style="color:var(--k);font-weight:600;">Confluent Cloud free tier</a> to skip the install entirely.</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--teal);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--teal);margin-bottom:12px;">🗺 What's in this guide</div>
+      <p style="font-size:.87rem;color:var(--ink2);line-height:1.7;margin-bottom:12px;">12 chapters from first principles to production. You don't need to read linearly — jump to what you need:</p>
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+        <tr><td style="padding:5px 8px;color:var(--k);font-weight:700;white-space:nowrap;">Ch 1–2</td><td style="padding:5px 8px;color:var(--ink2);">What Kafka is, why it exists, all the core concepts</td></tr>
+        <tr style="background:rgba(29,78,216,.03);"><td style="padding:5px 8px;color:var(--green);font-weight:700;white-space:nowrap;">Ch 3–4</td><td style="padding:5px 8px;color:var(--ink2);">Writing code — producers and consumers with Python</td></tr>
+        <tr><td style="padding:5px 8px;color:var(--purple);font-weight:700;white-space:nowrap;">Ch 5–6</td><td style="padding:5px 8px;color:var(--ink2);">Delivery guarantees, schemas, and Avro</td></tr>
+        <tr style="background:rgba(29,78,216,.03);"><td style="padding:5px 8px;color:var(--k);font-weight:700;white-space:nowrap;">Ch 7–8</td><td style="padding:5px 8px;color:var(--ink2);">Stream processing (Kafka Streams, ksqlDB) and Connect</td></tr>
+        <tr><td style="padding:5px 8px;color:var(--amber);font-weight:700;white-space:nowrap;">Ch 9–11</td><td style="padding:5px 8px;color:var(--ink2);">Operations, CLI, Docker, security, monitoring</td></tr>
+        <tr style="background:rgba(29,78,216,.03);"><td style="padding:5px 8px;color:var(--teal);font-weight:700;white-space:nowrap;">Ch 12</td><td style="padding:5px 8px;color:var(--ink2);">Quick reference — commands and config you'll use daily</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
      CHAPTER 1 — WHAT IS KAFKA
 ══════════════════════════════════════════ -->
 <div class="chapter-divider" id="what-is-kafka">
@@ -948,12 +997,8 @@ strong { font-weight:700; }
       </div>
     </div>
 
-    <!-- Two key callouts side by side -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="callout c-info">
-        <span class="callout-icon">🔑</span>
-        <span><strong>Same key → same partition, always.</strong> Kafka hashes the message key to pick a partition. All events for the same key stay ordered within their partition.</span>
-      </div>
+    <!-- Key callout -->
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
       <div class="callout c-tip">
         <span class="callout-icon">✅</span>
         <span><strong>Two groups = two independent readers.</strong> Group A and Group B both receive all messages from the topic. They never block or interfere with each other.</span>
@@ -1226,6 +1271,29 @@ strong { font-weight:700; }
     </div>
   </div>
 
+  <!-- KEY TERMS: CDC, WAL, ZooKeeper -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;">
+
+    <div class="card" style="border-left:4px solid var(--green);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:8px;">📖 Key Term — CDC</div>
+      <p style="font-size:.85rem;color:var(--ink2);line-height:1.68;margin-bottom:8px;"><strong>Change Data Capture</strong> is a technique for tracking every insert, update, and delete in a database and converting each change into an event — in real time, as it happens.</p>
+      <p style="font-size:.83rem;color:var(--ink2);line-height:1.65;">Instead of running batch queries to find what changed, CDC watches the database's internal change log and emits an event the moment each row is modified. Debezium is the most widely used CDC tool for Kafka.</p>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--amber);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:8px;">📖 Key Term — WAL / binlog</div>
+      <p style="font-size:.85rem;color:var(--ink2);line-height:1.68;margin-bottom:8px;">Databases record every change to an internal sequential log <em>before</em> applying it — this is the <strong>Write-Ahead Log</strong> (WAL in PostgreSQL, binlog in MySQL). It exists for crash recovery: if the database crashes, it replays the WAL to reconstruct the exact state.</p>
+      <p style="font-size:.83rem;color:var(--ink2);line-height:1.65;">CDC tools like Debezium tap into this log — they read it like a consumer reads a Kafka topic, turning each DB change record into a Kafka event without ever querying the database directly.</p>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--purple);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--purple);margin-bottom:8px;">📖 Key Term — ZooKeeper &amp; KRaft</div>
+      <p style="font-size:.85rem;color:var(--ink2);line-height:1.68;margin-bottom:8px;">Early Kafka relied on <strong>ZooKeeper</strong> — a separate distributed coordination service — to track which brokers were alive, who led which partition, and where consumer offsets lived. It worked, but required running and operating a second system alongside Kafka.</p>
+      <p style="font-size:.83rem;color:var(--ink2);line-height:1.65;"><strong>KRaft</strong> (Kafka Raft) replaced ZooKeeper in Kafka 3.3+. Kafka now manages its own cluster metadata internally using a Raft consensus algorithm — one less system to run, simpler ops, faster controller failover.</p>
+    </div>
+
+  </div>
+
   <!-- USE CASE PIPELINES (inspired by uploaded image 2) -->
   <div class="card" style="margin-bottom:18px;">
     <div class="card-title">🔁 Common Kafka Use-Case Pipelines — How It All Flows</div>
@@ -1294,45 +1362,6 @@ strong { font-weight:700; }
   <div class="g2" style="margin-bottom:16px;">
 
     <div>
-      <!-- Partition visual -->
-      <div class="card" style="margin-bottom:14px;">
-        <div class="card-title">📊 Partition Diagram — Topic "orders", 3 Partitions</div>
-        <div class="dia">
-          <div style="font-size:.76rem;font-weight:700;color:var(--k);margin-bottom:10px;">Each cell = one message. Number = offset. ← = current write head.</div>
-          <div class="p-row">
-            <div class="p-label">Partition 0</div>
-            <div style="display:flex;gap:3px;flex-wrap:wrap;">
-              <div class="msg" style="background:rgba(29,78,216,.1);border-color:rgba(29,78,216,.3);color:var(--k);">0</div>
-              <div class="msg" style="background:rgba(29,78,216,.1);border-color:rgba(29,78,216,.3);color:var(--k);">1</div>
-              <div class="msg" style="background:rgba(29,78,216,.1);border-color:rgba(29,78,216,.3);color:var(--k);">2</div>
-              <div class="msg msg-h" style="background:rgba(29,78,216,.25);border-color:rgba(29,78,216,.55);color:var(--k);">3 ←</div>
-            </div>
-          </div>
-          <div class="p-row">
-            <div class="p-label">Partition 1</div>
-            <div style="display:flex;gap:3px;flex-wrap:wrap;">
-              <div class="msg" style="background:rgba(21,128,61,.1);border-color:rgba(21,128,61,.3);color:var(--green);">0</div>
-              <div class="msg" style="background:rgba(21,128,61,.1);border-color:rgba(21,128,61,.3);color:var(--green);">1</div>
-              <div class="msg msg-h" style="background:rgba(21,128,61,.25);border-color:rgba(21,128,61,.55);color:var(--green);">2 ←</div>
-            </div>
-          </div>
-          <div class="p-row">
-            <div class="p-label">Partition 2</div>
-            <div style="display:flex;gap:3px;flex-wrap:wrap;">
-              <div class="msg" style="background:rgba(180,83,9,.1);border-color:rgba(180,83,9,.3);color:var(--amber);">0</div>
-              <div class="msg msg-h" style="background:rgba(180,83,9,.25);border-color:rgba(180,83,9,.55);color:var(--amber);">1 ←</div>
-            </div>
-          </div>
-          <div style="font-size:.71rem;color:var(--ink3);margin-top:10px;font-weight:500;">
-            Offsets are per-partition — each partition has its own 0, 1, 2… independent of the others.
-          </div>
-        </div>
-        <div class="callout c-info" style="margin-top:10px;">
-          <span class="callout-icon">🔑</span>
-          <span>Messages with the <strong>same key always land in the same partition</strong>, guaranteeing order per key. E.g., all events for <code>user-alice</code> always go to P0.</span>
-        </div>
-      </div>
-
       <!-- Consumer group diagram -->
       <div class="card ak">
         <div class="card-title">👥 Consumer Groups — How Parallelism Works</div>
@@ -1346,6 +1375,10 @@ strong { font-weight:700; }
             <div class="callout c-tip" style="margin-top:6px;">
               <span class="callout-icon">✅</span>
               <span>Two different <em>groups</em> reading the same topic = both get all messages independently. Perfect for fan-out (analytics + alerts + storage, all from one topic).</span>
+            </div>
+            <div class="callout c-info" style="margin-top:6px;">
+              <span class="callout-icon">🔢</span>
+              <span><strong>Offsets are per-partition.</strong> Each partition has its own independent sequence: 0, 1, 2… Partition 0 offset 3 and Partition 1 offset 3 are two completely different messages.</span>
             </div>
           </div>
           <div class="dia" style="min-width:175px;">
@@ -1381,6 +1414,30 @@ strong { font-weight:700; }
         <tr><td><strong>Compaction</strong></td><td>Alternative to retention — keep only the latest value per key</td></tr>
         <tr><td><strong>KRaft</strong></td><td>Kafka's built-in consensus layer (replaced ZooKeeper in Kafka 3+)</td></tr>
       </table>
+    </div>
+  </div>
+
+  <!-- Log Compaction vs Retention -->
+  <div class="card" style="margin-bottom:18px;">
+    <div class="card-title">🗂 Retention vs Log Compaction — Two Ways Kafka Manages Storage</div>
+    <p style="font-size:.87rem;color:var(--ink2);line-height:1.65;margin-bottom:14px;">Every Kafka topic must eventually clean up old data. There are two strategies, and choosing the right one depends on what the topic represents.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+      <div style="border-radius:10px;background:rgba(29,78,216,.04);border:1.5px solid rgba(29,78,216,.18);padding:14px 16px;">
+        <div style="font-weight:700;font-size:.88rem;color:var(--k);margin-bottom:8px;">⏱ Retention (delete policy)</div>
+        <p style="font-size:.84rem;color:var(--ink2);line-height:1.65;margin-bottom:8px;">Messages are kept for a fixed time window (default 7 days) or until the topic hits a size limit. After that, old messages are deleted from the beginning of the log — regardless of their content or key.</p>
+        <p style="font-size:.83rem;color:var(--ink3);line-height:1.6;"><strong>Use for:</strong> event streams where history matters for a window — user activity logs, order events, metrics. Consumers replay recent history if they fall behind or restart.</p>
+        <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--ink3);">cleanup.policy=delete<br>retention.ms=604800000 <span style="color:var(--ink4);"># 7 days</span></div>
+      </div>
+      <div style="border-radius:10px;background:rgba(13,148,136,.04);border:1.5px solid rgba(13,148,136,.2);padding:14px 16px;">
+        <div style="font-weight:700;font-size:.88rem;color:var(--teal);margin-bottom:8px;">🗜 Log Compaction (compact policy)</div>
+        <p style="font-size:.84rem;color:var(--ink2);line-height:1.65;margin-bottom:8px;">Kafka scans the log and keeps only the <em>most recent message for each key</em>, discarding all older versions of the same key. The log grows more slowly and always holds the current state of every key — forever.</p>
+        <p style="font-size:.83rem;color:var(--ink3);line-height:1.6;"><strong>Use for:</strong> state topics — user profiles, product prices, settings, anything where you want the latest value per entity indefinitely. KTable backing topics always use compaction.</p>
+        <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--ink3);">cleanup.policy=compact<br><span style="color:var(--ink4);"># keeps latest value per key forever</span></div>
+      </div>
+    </div>
+    <div class="callout c-info">
+      <span class="callout-icon">💡</span>
+      <span><strong>You can combine both:</strong> <code>cleanup.policy=compact,delete</code> keeps the latest value per key AND deletes anything older than the retention window. Useful for state topics where you don't need history beyond a few days.</span>
     </div>
   </div>
 
@@ -1482,10 +1539,6 @@ p.flush()  <span class="cm"># block until all messages are delivered</span></div
         <tr><td><code>enable.idempotence</code></td><td>Broker deduplicates retried messages</td><td><code>true</code> in production</td></tr>
         <tr><td><code>delivery.timeout.ms</code></td><td>Max time to wait for delivery including retries</td><td>120000 (2 min)</td></tr>
       </table>
-      <div class="callout c-info" style="margin-top:10px;">
-        <span class="callout-icon">💡</span>
-        <span><strong>Key routing:</strong> if you provide a <code>key</code>, Kafka hashes it to a partition. Same key → same partition → ordered delivery for that key. No key → round-robin across partitions.</span>
-      </div>
     </div>
   </div>
 
@@ -1813,7 +1866,7 @@ producer.flush()</div>
     <div class="ctx-label">Stream processing without a separate cluster</div>
     <p>So far you've written producers and consumers by hand. But what if you need to <em>filter, enrich, aggregate, or join</em> event streams continuously? You have two Kafka-native options that don't require running a separate Spark or Flink cluster.</p>
     <div class="ctx-grid">
-      <div class="ctx-term"><strong>Kafka Streams</strong><span>A Java/Scala library you embed in your application. No cluster to manage. Scales horizontally by adding instances. State stored in local RocksDB + backed up to a Kafka compacted topic.</span></div>
+      <div class="ctx-term"><strong>Kafka Streams</strong><span>A Java/Scala library you embed in your application. No cluster to manage. Scales horizontally by adding instances. State stored in local RocksDB + backed up to a Kafka compacted topic. <em>RocksDB is an embedded key-value store (like a local database inside your process) — it lets Kafka Streams maintain stateful aggregations like counts and joins without an external database.</em></span></div>
       <div class="ctx-term"><strong>ksqlDB</strong><span>A SQL engine that runs on Kafka. Write <code>CREATE STREAM ... AS SELECT</code> and Kafka continuously executes it. Great for dashboards, real-time aggregations, and simple enrichments without writing code.</span></div>
       <div class="ctx-term"><strong>KStream</strong><span>An unbounded stream of independent events (like an append-only log). Each record matters individually — think order events, clicks, logs. Join, filter, aggregate across time windows.</span></div>
       <div class="ctx-term"><strong>KTable</strong><span>A compacted changelog — only the latest record per key is kept. Think "current state of user X" not "history of all user X actions." Backed by a Kafka compacted topic.</span></div>
@@ -2490,11 +2543,17 @@ document.querySelectorAll('.cb, .cbd').forEach(block => {
   block.style.cursor = 'pointer';
   block.title = 'Click to copy';
   block.addEventListener('click', () => {
-    const text = block.innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      const orig = block.style.outline;
-      block.style.outline = '2px solid rgba(29,78,216,.5)';
-      setTimeout(() => { block.style.outline = orig; }, 700);
+    navigator.clipboard.writeText(block.innerText).then(() => {
+      const flash = document.createElement('div');
+      flash.textContent = 'Copied!';
+      flash.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(29,78,216,0.07);border-radius:10px;font-family:"JetBrains Mono",monospace;font-size:.78rem;font-weight:700;color:var(--k);pointer-events:none;opacity:0;transition:opacity .15s;';
+      block.style.position = 'relative';
+      block.appendChild(flash);
+      requestAnimationFrame(() => { flash.style.opacity = '1'; });
+      setTimeout(() => {
+        flash.style.opacity = '0';
+        setTimeout(() => flash.remove(), 200);
+      }, 700);
     });
   });
 });
