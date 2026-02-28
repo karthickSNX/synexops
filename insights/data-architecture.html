@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Engineering — Master Reference</title>
+<title>Data Architecture — Master Reference</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -404,6 +404,7 @@ body{
   margin:2px 3px 2px 0;transition:all .15s;
   text-decoration:none;cursor:default;
 }
+a.pill,.hero-tag{cursor:pointer;}
 .pill.pb{background:var(--blue-lt);color:var(--blue);border-color:var(--blue-bd)}
 .pill.pt{background:var(--teal-lt);color:var(--teal);border-color:var(--teal-bd)}
 .pill.pv{background:var(--violet-lt);color:var(--violet);border-color:var(--violet-bd)}
@@ -613,7 +614,7 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
 <!-- ═══ NAV ═══ -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-logo">DE <span>Ref</span></div>
+    <div class="nav-logo">DA <span>Ref</span></div>
     <div class="nav-sep"></div>
     <div class="nav-links">
       <a href="#s0">Storage</a>
@@ -753,9 +754,9 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
 <!-- ═══ HERO ═══ -->
 <div class="hero">
   <div class="hero-eyebrow">Master Field Reference</div>
-  <div class="hero-title">Data <em>Engineering</em></div>
+  <div class="hero-title">Data <em>Architecture</em></div>
   <p class="hero-desc">
-    The complete practitioner's guide for working data engineers. From <strong>pipeline fundamentals</strong> to <strong>cloud architecture</strong>, this reference covers every tool, pattern, and decision you'll face on the job.<br><br>Look for the 💡 icons throughout for simplified explanations of complex concepts.
+    The complete practitioner's guide for working data engineers and architects. From <strong>pipeline fundamentals</strong> to <strong>cloud architecture</strong>, this reference covers every tool, pattern, and decision you'll face on the job.<br><br>Look for the 💡 icons throughout for simplified explanations of complex concepts.
   </p>
   <div class="hero-tags">
     <a href="#s3" class="hero-tag pill pb">⚡ Spark &amp; PySpark</a>
@@ -772,22 +773,22 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
   <div style="margin-bottom:28px;padding:18px 22px;background:rgba(29,78,216,0.03);border:1px solid rgba(29,78,216,0.14);border-radius:14px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--ink4);white-space:nowrap;padding-top:2px">Start here →</div>
     <div style="display:flex;flex-wrap:wrap;gap:10px;flex:1">
-      <div style="background:rgba(22,163,74,0.048);border:1px solid rgba(22,163,74,0.20);border-radius:10px;padding:10px 14px;font-size:13px">
+      <a href="#s0" style="background:rgba(22,163,74,0.048);border:1px solid rgba(22,163,74,0.20);border-radius:10px;padding:10px 14px;font-size:13px;text-decoration:none;display:block;cursor:pointer;transition:all .18s" onmouseover="this.style.boxShadow='0 4px 16px rgba(22,163,74,0.18)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='';this.style.transform=''">
         <div style="font-weight:700;color:var(--green);margin-bottom:2px">🌱 Brand New to DE</div>
         <div style="color:var(--ink3)">S0 Storage → S1 Fundamentals → S2 File Formats → S16 Databases</div>
-      </div>
-      <div style="background:rgba(29,78,216,0.042);border:1px solid rgba(29,78,216,0.18);border-radius:10px;padding:10px 14px;font-size:13px">
+      </a>
+      <a href="#s3" style="background:rgba(29,78,216,0.042);border:1px solid rgba(29,78,216,0.18);border-radius:10px;padding:10px 14px;font-size:13px;text-decoration:none;display:block;cursor:pointer;transition:all .18s" onmouseover="this.style.boxShadow='0 4px 16px rgba(29,78,216,0.18)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='';this.style.transform=''">
         <div style="font-weight:700;color:var(--blue);margin-bottom:2px">🔧 Junior DE</div>
         <div style="color:var(--ink3)">S3 Spark → S4 Kafka → S5 dbt → S6 Orchestration → S7 Quality</div>
-      </div>
-      <div style="background:rgba(124,58,237,0.042);border:1px solid rgba(124,58,237,0.18);border-radius:10px;padding:10px 14px;font-size:13px">
+      </a>
+      <a href="#s8" style="background:rgba(124,58,237,0.042);border:1px solid rgba(124,58,237,0.18);border-radius:10px;padding:10px 14px;font-size:13px;text-decoration:none;display:block;cursor:pointer;transition:all .18s" onmouseover="this.style.boxShadow='0 4px 16px rgba(124,58,237,0.18)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='';this.style.transform=''">
         <div style="font-weight:700;color:var(--violet);margin-bottom:2px">🚀 Senior DE</div>
         <div style="color:var(--ink3)">S8 Modeling → S9 Modern Arch → S12 DataOps → S15 Best Practices</div>
-      </div>
-      <div style="background:rgba(217,119,6,0.042);border:1px solid rgba(217,119,6,0.18);border-radius:10px;padding:10px 14px;font-size:13px">
+      </a>
+      <a href="#s10" style="background:rgba(217,119,6,0.042);border:1px solid rgba(217,119,6,0.18);border-radius:10px;padding:10px 14px;font-size:13px;text-decoration:none;display:block;cursor:pointer;transition:all .18s" onmouseover="this.style.boxShadow='0 4px 16px rgba(217,119,6,0.18)';this.style.transform='translateY(-1px)'" onmouseout="this.style.boxShadow='';this.style.transform=''">
         <div style="font-weight:700;color:var(--amber);margin-bottom:2px">🤖 ML / AI Focus</div>
         <div style="color:var(--ink3)">S10 Vector &amp; OLAP → S0 Lakehouse → S9 Contracts → S3 Spark</div>
-      </div>
+      </a>
     </div>
   </div>
   <div class="hero-stats">
@@ -960,7 +961,7 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
       <div class="divider"></div>
       <div class="checklist">
         <div class="check-item"><div class="check-dot dot-green"></div><div><strong>True multi-engine</strong> — Spark, Trino, Flink, Athena, BigQuery, Snowflake all read natively</div></div>
-        <div class="check-item"><div class="check-dot dot-green"></div><div><strong>Partition evolution</strong> — change partition scheme without rewriting files. Delta can't do this.</div></div>
+        <div class="check-item"><div class="check-dot dot-green"></div><div><strong>Partition evolution</strong> — change partition scheme without rewriting files. Delta's traditional partitioning requires rewrite; however <strong>Liquid Clustering</strong> (Delta 3.0+) achieves flexible layout evolution without full rewrites.</div></div>
         <div class="check-item"><div class="check-dot dot-green"></div><div><strong>Hidden partitioning</strong> — partition on derived columns (year/month/day from timestamp) transparently</div></div>
         <div class="check-item"><div class="check-dot dot-green"></div><div><strong>Row-level deletes</strong> — supports GDPR right-to-erasure without full partition rewrites</div></div>
         <div class="check-item"><div class="check-dot dot-amber"></div><div><strong>More complex</strong> to configure and tune than Delta if you're already on Databricks</div></div>
@@ -1104,8 +1105,8 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
         </tr>
         <tr>
           <td><strong>Partition evolution</strong></td>
-          <td>Requires rewriting all data (no in-place partition change)</td>
-          <td>Native partition evolution — change partition strategy without rewriting data. Major advantage.</td>
+          <td>Traditional partitioning requires rewrite. <strong>Liquid Clustering</strong> (Delta 3.0+) replaces static partitions with flexible Z-order clustering — no rewrite on layout change, but it's a different paradigm than Iceberg's partition evolution.</td>
+          <td>Native partition evolution — change partition strategy without rewriting data. Column-ID-based tracking means renaming a partition column is metadata-only.</td>
           <td>Fixed at table creation; no native partition evolution</td>
         </tr>
         <tr>
@@ -1129,7 +1130,7 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
       </table></div>
       <div class="callout tip mt16">
         <span class="callout-icon">💡</span>
-        <div class="callout-body"><strong>The Iceberg advantage that matters most:</strong> Iceberg tracks columns by a hidden integer ID, not by name. This means renaming a column in Iceberg is a pure metadata operation and never breaks readers. Delta and Hudi track columns by name — rename one and any reader that uses the old name breaks.</div>
+        <div class="callout-body"><strong>The Iceberg advantage that matters most:</strong> Iceberg tracks columns by a hidden integer ID, not by name. This means renaming a column in Iceberg is a pure metadata operation and never breaks readers. Delta supports <strong>Column Mapping</strong> (since 2021, enabled via <code style="background:rgba(0,0,0,0.07);padding:1px 4px;border-radius:4px;font-size:11px">delta.columnMapping.mode='name'</code>) which assigns physical IDs to columns — enabling safe renames without breaking readers. Without Column Mapping enabled, Delta tracks by name. Hudi tracks by name only.</div>
       </div>
     </div>
   </div>
@@ -1152,9 +1153,10 @@ a.pill:hover,.pill.clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8
           <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--green);margin-bottom:12px">Detection</div>
           <div class="code-wrap">
             <div class="code-label"><span class="code-label-text">SQL — find small file partitions</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <div class="code-body"><code><span class="cmt">-- Delta: describe detail shows file count + avg size</span>
+            <div class="code-body"><code><span class="cmt">-- Delta-specific: DESCRIBE DETAIL only works on Delta tables</span>
 <span class="kw">DESCRIBE</span> <span class="kw">DETAIL</span> prod.orders.fct_orders;
 <span class="cmt">-- numFiles > 10000 and avgFileSize < 20MB → compaction needed</span>
+<span class="cmt">-- Vanilla Parquet: use dbutils.fs.ls('/path/') or os.listdir() instead</span>
 
 <span class="cmt">-- Spark: count files per partition</span>
 <span class="kw">from</span> pyspark.sql <span class="kw">import</span> functions <span class="kw">as</span> F
@@ -1474,12 +1476,12 @@ target_files = <span class="num">20</span>  <span class="cmt"># ~500MB each for 
     </div>
     <div class="fmt-card">
       <span class="fmt-name" style="color:var(--orange)">Apache Hudi</span>
-      <p class="fmt-desc">Two modes: <strong>Copy-on-Write</strong> (fast reads, slow writes — rewrites entire file) and <strong>Merge-on-Read</strong> (fast writes, lazy compaction — logs deltas). Incremental pull queries let downstream consumers ask "give me only what changed." Used heavily at Uber and Robinhood for sub-minute freshness.</p>
+      <p class="fmt-desc">Two modes: <strong>Copy-on-Write</strong> (fast reads, slow writes — rewrites entire file) and <strong>Merge-on-Read</strong> (fast writes, lazy compaction — logs deltas). Incremental pull queries let downstream consumers ask "give me only what changed." Pioneer of sub-minute freshness CDC. Delta 3.0+ and Iceberg with streaming ingest have narrowed this gap, but Hudi still leads on complex multi-table CDC and incremental pull query patterns.</p>
       <div><span class="pill pg">Upserts</span><span class="pill pt">Incremental pull</span></div>
     </div>
     <div class="fmt-card">
       <span class="fmt-name" style="color:var(--rose)">JSON / JSONL</span>
-      <p class="fmt-desc">Human-readable. JSONL is newline-delimited — each line is a complete JSON object — which makes it streamable. 3–10× larger than Parquet for the same data. <strong>Use as your raw landing zone only.</strong> Always convert to Parquet downstream for any query workload.</p>
+      <p class="fmt-desc">Human-readable. JSONL is newline-delimited — each line is a complete JSON object — which makes it streamable. 3–10× larger than Parquet for flat data; the real performance tax is <strong>nested JSON</strong> — Spark must "shred" deeply nested structures into columns during read, which is CPU-intensive and can dominate job time. <strong>Use as your raw landing zone only.</strong> Always convert to Parquet downstream.</p>
       <div><span class="pill pg">Readable</span><span class="pill pr">Verbose (3-10×)</span><span class="pill pm">Raw zone only</span></div>
     </div>
     <div class="fmt-card">
@@ -2670,7 +2672,7 @@ id | city | valid_from | valid_to   | is_current
       </div>
       <div class="callout warn mt12">
         <span class="callout-icon">&#x26A0;&#xFE0F;</span>
-        <div class="callout-body"><strong>Salt your hashes.</strong> Unsalted <span class="ic">SHA2(email)</span> is reversible via rainbow tables for common email formats. Use <span class="ic">SHA2(CONCAT(email, secret_salt))</span> or a dedicated tokenisation service (AWS Macie, Hashicorp Vault Transform).</div>
+        <div class="callout-body"><strong>Salt your hashes.</strong> Unsalted <span class="ic">SHA2(email)</span> is reversible via rainbow tables for common email formats. Use <span class="ic">SHA2(CONCAT(email, secret_salt))</span> or a dedicated tokenisation service (AWS KMS + custom logic, AWS Nitro Enclaves, or HashiCorp Vault Transform). Note: AWS Macie is a <em>discovery/classification</em> tool — it finds PII, it does not tokenise it.</div>
       </div>
     </div>
   </div>
@@ -2821,7 +2823,7 @@ id | city | valid_from | valid_to   | is_current
       <div class="sec-eyebrow">Section 10</div>
       <div class="sec-title">Vector Databases &amp; <em>OLAP Engines</em></div>
       <p class="sec-desc">
-        Two of the most exciting areas in modern data engineering. <strong>Vector databases</strong> emerged from the AI/LLM boom — they store high-dimensional embeddings and let you search by semantic meaning rather than exact value. They're the engine behind every RAG (Retrieval-Augmented Generation) system. <strong>OLAP (Online Analytical Processing)</strong> engines like ClickHouse, Apache Pinot, and DuckDB push the boundaries of what's possible with analytical queries — ClickHouse can aggregate billions of rows in under a second on modest hardware. Contrast with <strong>OLTP (Online Transaction Processing)</strong> — systems like Postgres that handle fast, small writes (your app database). You read from OLAP; your users write to OLTP.
+        <strong>Vector databases</strong> store high-dimensional embeddings and search by semantic similarity — the engine behind every RAG system. <strong>OLAP engines</strong> (ClickHouse, DuckDB, Apache Pinot) answer analytical aggregations at sub-second speed on billions of rows. Different problem spaces, often used together: OLAP for structured dashboards, vector DB for AI features. ClickHouse can aggregate billions of rows in under a second on modest hardware. Contrast with <strong>OLTP (Online Transaction Processing)</strong> — systems like Postgres that handle fast, small writes (your app database). You read from OLAP; your users write to OLTP.
       </p>
     </div>
     <div class="sec-meta">
@@ -3167,7 +3169,7 @@ CLUSTER BY customer_id, status
       </table></div>
       <div class="card" style="background:rgba(29,78,216,0.024);border-color:var(--blue-bd);padding:20px">
         <div class="card-title">✨ Microsoft Fabric (2024+)</div>
-        <p class="card-desc">Unifies OneLake (one ADLS Gen2 for everything), Lakehouse, Data Warehouse, Apache Spark, Data Factory, and Power BI into a single SaaS experience. <strong>One tenant, one copy of data, multi-workload access.</strong> The most integrated Azure data platform to date — watch this space.</p>
+        <p class="card-desc">Unifies OneLake (one ADLS Gen2 for everything), Lakehouse, Data Warehouse, Apache Spark, Data Factory, and Power BI into a single SaaS experience. <strong>One tenant, one copy of data, multi-workload access.</strong> Unifies compute and storage via OneLake — one logical data lake, multiple workload engines (Spark, SQL, KQL, notebooks) on top.</p>
       </div>
     </div>
   </div>
@@ -3547,7 +3549,7 @@ resource <span class="str">"aws_s3_bucket_lifecycle_configuration"</span>
       <div class="sec-eyebrow">Section 14</div>
       <div class="sec-title">The Modern <em>Data Stack</em></div>
       <p class="sec-desc">
-        The data tooling ecosystem moves fast. New tools emerge monthly, categories consolidate, and what was cutting-edge two years ago can be legacy today. This section maps the <strong>16 most important tools</strong> in the modern data stack — what they do, why they exist, and when to reach for them. Click any tool card to visit its documentation.
+        16 tools. One map. Every layer of the stack from ingestion to serving. What each tool does, why it exists, and when to reach for it over its competitors. Click any card to visit its docs.
       </p>
     </div>
     <div class="sec-meta">
