@@ -100,10 +100,6 @@ code,.mono{font-family:'JetBrains Mono',monospace;font-size:.85em;}
 .pill-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
 .pill{padding:4px 14px;border-radius:20px;font-size:.74rem;font-weight:500;background:rgba(255,255,255,0.72);border:1px solid var(--border);color:var(--t2);font-family:'JetBrains Mono',monospace;}
 
-/* NAV */
-.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px;padding:16px 20px;background:rgba(255,255,255,0.60);border:1px solid var(--border);border-radius:var(--r);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:var(--shadow);}
-.toc a{padding:5px 13px;border-radius:20px;font-size:.73rem;font-weight:600;text-decoration:none;color:var(--t2);background:rgba(255,255,255,0.72);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;transition:all .15s;}
-.toc a:hover,.toc a.active{background:var(--spark);color:#fff;border-color:var(--spark);}
 
 /* SECTION HEADER */
 .sec{margin-bottom:52px;}
@@ -209,6 +205,7 @@ code,.mono{font-family:'JetBrains Mono',monospace;font-size:.85em;}
 strong{font-weight:600;}
 em{font-style:italic;color:var(--t2);}
 
+/* NAV — .toc class removed (unused) */
 /* FLOATING STICKY NAV */
 .floatnav{
   position:sticky; top:12px; z-index:300;
@@ -361,22 +358,55 @@ html{ scroll-behavior:smooth; }
   </div>
 </div>
 
-<!-- ══════════ HADOOP COMPARISON ══════════ -->
-<div class="g2" style="margin-bottom:28px;">
-  <div class="card" style="border-left:3px solid var(--spark);">
-    <div class="lbl lbl-s">🔥 What is Apache Spark?</div>
-    <p style="font-size:.88rem;color:var(--t2);line-height:1.7;margin-bottom:12px;">Apache Spark is an <strong>open-source, unified analytics engine</strong> for large-scale data processing. It runs computations <strong>in-memory</strong>, making it up to 100× faster than Hadoop MapReduce for many workloads.</p>
-    <div class="callout callout-i">
-      <span class="icon">💡</span>
-      <span><strong>One-liner:</strong> Spark = <em>distributed computation framework</em> that can do batch, streaming, SQL, ML, and graph — all from one unified API.</span>
+<!-- ══════════ KEY TERM: API ══════════ -->
+<div class="card" style="border-left:3px solid var(--gold);margin-bottom:28px;">
+  <div class="lbl lbl-g">📖 Key Term — API (Application Programming Interface)</div>
+  <div class="g2" style="gap:20px;">
+    <div>
+      <p style="font-size:.88rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">An <strong>API</strong> is the set of functions, methods, and commands a library or system exposes for you to use — without you needing to understand how it works internally. You call the API; the library handles the rest.</p>
+      <p style="font-size:.88rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">When this guide says <strong>"the DataFrame API"</strong>, it means the specific collection of methods Spark gives you to work with DataFrames: <code>.select()</code>, <code>.filter()</code>, <code>.groupBy()</code>, <code>.join()</code>, and so on. You call those methods; Spark handles the distributed execution across potentially thousands of machines.</p>
+      <p style="font-size:.88rem;color:var(--t2);line-height:1.72;">Spark has several APIs layered on top of each other — the low-level <strong>RDD API</strong>, the high-level <strong>DataFrame API</strong>, the <strong>SQL API</strong> (write SQL strings directly), and the <strong>Streaming API</strong>. They're all different vocabularies for talking to the same engine.</p>
     </div>
-    <div style="margin-top:10px;">
-      <div class="callout callout-g"><span class="icon">📅</span><span>Born 2009 at UC Berkeley AMPLab. Apache top-level project since 2014.</span></div>
-      <div class="callout callout-g" style="margin-top:6px;"><span class="icon">📝</span><span>Primary languages: <strong>Scala</strong> (native), Python (PySpark), Java, R, SQL</span></div>
+    <div>
+      <div class="analogy" style="margin-bottom:10px;">
+        <span class="ae">🍽</span>
+        <span><strong>Restaurant menu analogy:</strong> The menu is the API. You don't need to know how the kitchen works — you just order from the options available. The kitchen (Spark's execution engine) handles everything behind the scenes. A different restaurant (pandas, SQL database) has a different menu — different API, different kitchen.</span>
+      </div>
+      <div class="inset">
+        <strong>In Spark specifically:</strong>
+        <ul style="margin-top:6px;display:flex;flex-direction:column;gap:4px;list-style:none;">
+          <li style="font-size:.83rem;color:var(--t2);">📊 <strong>DataFrame API</strong> — <code>df.filter()</code>, <code>df.groupBy()</code> — use this 90% of the time</li>
+          <li style="font-size:.83rem;color:var(--t2);">🧱 <strong>RDD API</strong> — <code>rdd.map()</code>, <code>rdd.reduce()</code> — low-level, rarely needed</li>
+          <li style="font-size:.83rem;color:var(--t2);">🗄 <strong>SQL API</strong> — <code>spark.sql("SELECT ...")</code> — same result as DataFrame API</li>
+          <li style="font-size:.83rem;color:var(--t2);">🌊 <strong>Streaming API</strong> — <code>spark.readStream</code> — same syntax, runs continuously</li>
+        </ul>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- ══════════ GETTING STARTED ══════════ -->
+<div class="g2" style="margin-bottom:28px;">
   <div class="card" style="border-left:3px solid var(--spark);">
-    <div class="lbl lbl-s">🆚 Why not just Hadoop MapReduce?</div>
+    <div class="lbl lbl-s">⚡ Getting Started — run Spark in 60 seconds</div>
+    <p style="font-size:.88rem;color:var(--t2);line-height:1.7;margin-bottom:12px;">The fastest way to get hands-on is PySpark locally. You need Python 3.8+ and Java 11 or 17 (Spark's JVM requirement).</p>
+    <div class="cb"><span class="cm"># 1. Install PySpark</span>
+pip install pyspark
+
+<span class="cm"># 2. Verify — open a terminal and run:</span>
+pyspark
+<span class="cm"># → Spark UI at http://localhost:4040</span>
+
+<span class="cm"># 3. Or run a script directly:</span>
+spark-submit my_job.py</div>
+    <div class="callout callout-i" style="margin-top:10px;">
+      <span class="icon">💡</span>
+      <span><strong>No cluster needed to learn.</strong> <code>local[*]</code> mode runs Spark on your laptop using all CPU cores — identical API to a 1,000-node cluster. Databricks Community Edition and Google Colab both offer free hosted Spark environments if you'd rather skip the install.</span>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--teal);">
+    <div class="lbl lbl-t">🆚 Why not just Hadoop MapReduce?</div>
+    <p style="font-size:.85rem;color:var(--t2);line-height:1.65;margin-bottom:10px;">Spark was built specifically to fix MapReduce's biggest flaw: writing intermediate results to disk after every step. Spark keeps everything in memory across the full pipeline.</p>
     <table class="tbl">
       <tr><th>Feature</th><th>Hadoop MR</th><th>Spark</th></tr>
       <tr><td>Speed</td><td>Disk I/O per step</td><td><strong>In-memory, ~100× faster</strong></td></tr>
@@ -397,6 +427,28 @@ html{ scroll-behavior:smooth; }
     <div class="concept-title">🏗 Understanding the cluster before you write a single line</div>
     <p>A Spark application has three physical components: a <strong>Driver</strong> (your program's main process), a <strong>Cluster Manager</strong> (resource allocator), and <strong>Executors</strong> (the workers that actually run your code). The Driver never touches data directly — it coordinates. The Executors do all the heavy lifting on their local partitions of data.</p>
     <p>This separation is deliberate. It lets Spark scale horizontally — you need more compute? Add more Executor machines. The Driver code doesn't change at all. And if an Executor fails mid-job, Spark automatically reruns its tasks on a healthy one, making it fault-tolerant by design.</p>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card" style="border-left:3px solid var(--gold);">
+      <div class="lbl lbl-g">📖 Key Term — JVM (Java Virtual Machine)</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">Spark is written in Scala, which compiles and runs on the <strong>JVM</strong> — Java's runtime environment. Think of the JVM as a standardised box that runs the same compiled code on any operating system. Every Executor and the Driver are JVM processes.</p>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">This matters for Python developers because PySpark runs <em>two</em> processes side by side: the JVM (doing the actual Spark work) and a Python process (running your code). When you use a plain Python UDF, data has to cross the boundary between them for every single row — that serialisation overhead is why Python UDFs are so slow.</p>
+      <div class="callout callout-i">
+        <span class="icon">💡</span>
+        <span>Built-in functions like <code>F.sum()</code>, <code>F.filter()</code> run entirely inside the JVM — zero Python↔JVM crossing. That's why they're 10–100× faster than row-at-a-time Python UDFs. Pandas UDFs batch the crossing to once per partition instead of once per row.</span>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--teal);">
+      <div class="lbl lbl-t">📖 Key Term — DAG (Directed Acyclic Graph)</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">A <strong>DAG</strong> is a map of every computation step in your job and how they depend on each other. <em>Directed</em> means each step flows in one direction (no going backwards). <em>Acyclic</em> means there are no loops. <em>Graph</em> means steps can branch and merge — not just a straight line.</p>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">When you call an action, Spark builds a DAG of everything you've asked it to do — reads, filters, joins, aggregations — and hands it to the Catalyst Optimizer before running anything. Seeing the whole plan at once is what lets Catalyst reorder and eliminate steps for efficiency.</p>
+      <div style="background:rgba(13,110,101,0.06);border:1px solid var(--tealborder);border-radius:var(--r2);padding:12px 14px;font-size:.82rem;font-family:'JetBrains Mono',monospace;line-height:1.8;">
+        <span style="color:var(--spark);">read</span> → <span style="color:var(--teal);">filter</span> → <span style="color:var(--blue);">join</span> → <span style="color:var(--teal);">groupBy</span> → <span style="color:var(--green);">write</span><br>
+        <span style="color:var(--t3);font-size:.75rem;">↑ Spark sees ALL of this before executing a single step</span><br>
+        <span style="color:var(--t3);font-size:.75rem;">→ can push the filter before the join, skip unneeded columns, etc.</span>
+      </div>
+    </div>
   </div>
 
   <div class="g3" style="margin-bottom:16px;">
@@ -465,6 +517,49 @@ html{ scroll-behavior:smooth; }
       </div>
     </div>
   </div>
+
+  <div class="card lv" style="margin-top:16px;">
+    <div class="lbl lbl-v">🛡 How to avoid or minimize shuffles — the complete playbook</div>
+    <p style="font-size:.86rem;color:var(--t2);line-height:1.68;margin-bottom:14px;">Since shuffles are the #1 cause of slow Spark jobs, here is every technique available to you — from easiest wins to structural changes:</p>
+    <table class="tbl">
+      <tr><th>Technique</th><th>How it works</th><th>When to use it</th></tr>
+      <tr>
+        <td><strong>Broadcast join</strong><br><code style="font-size:.72rem;">broadcast(small_df)</code></td>
+        <td>Copies the small table to every executor's memory. Each executor joins locally — zero network shuffle.</td>
+        <td>One side of the join is small (&lt;~10–50 MB). Dimension tables, lookup tables, config data.</td>
+      </tr>
+      <tr>
+        <td><strong>Prefer narrow transforms</strong><br><code style="font-size:.72rem;">filter() select() withColumn()</code></td>
+        <td>Narrow transformations work on one partition independently — no data crosses executor boundaries.</td>
+        <td>Always. Filter and project as early as possible before any wide operation.</td>
+      </tr>
+      <tr>
+        <td><strong>coalesce() not repartition()</strong><br><code style="font-size:.72rem;">df.coalesce(n)</code></td>
+        <td><code>coalesce()</code> reduces partitions by merging local ones — no shuffle. <code>repartition()</code> does a full shuffle to redistribute evenly.</td>
+        <td>Use <code>coalesce()</code> to reduce output files after a filter shrinks the data. Use <code>repartition()</code> only when you need an even distribution for a subsequent join.</td>
+      </tr>
+      <tr>
+        <td><strong>Pre-partition on join key</strong><br><code style="font-size:.72rem;">df.repartition(n, "key")</code></td>
+        <td>If two DataFrames are already partitioned by the same key, Spark can join partition-to-partition without a shuffle.</td>
+        <td>Repeated joins on the same key in a long pipeline. Pay the repartition cost once, save shuffles on every subsequent join.</td>
+      </tr>
+      <tr>
+        <td><strong>Bucketing</strong><br><code style="font-size:.72rem;">bucketBy(n, "key")</code></td>
+        <td>Writes data to disk pre-sorted and pre-partitioned by key. When Spark reads two bucketed tables with the same bucket count, it can join without any shuffle at all.</td>
+        <td>Tables that are joined repeatedly across multiple jobs (e.g. a fact table joined to a user table every day).</td>
+      </tr>
+      <tr>
+        <td><strong>Avoid groupByKey on RDDs</strong><br><code style="font-size:.72rem;">reduceByKey() instead</code></td>
+        <td><code>groupByKey()</code> shuffles all values to one executor before reducing. <code>reduceByKey()</code> pre-aggregates locally first, then shuffles only the partial results.</td>
+        <td>Any RDD-level aggregation. Can be 10× less data over the network.</td>
+      </tr>
+      <tr>
+        <td><strong>Enable AQE</strong><br><code style="font-size:.72rem;">adaptive.enabled=true</code></td>
+        <td>Adaptive Query Execution dynamically converts sort-merge joins to broadcast joins at runtime if one side turns out smaller than estimated, and merges tiny shuffle partitions automatically.</td>
+        <td>Always on in Spark 3.2+. Free wins with no code changes.</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
 <!-- ══════════ RDD / DF / DS ══════════ -->
@@ -474,8 +569,31 @@ html{ scroll-behavior:smooth; }
 
   <div class="concept ls">
     <div class="concept-title">📦 Spark's three data abstractions — and why they exist</div>
-    <p>Spark has evolved over the years and introduced three different ways to represent distributed data. Each is built on top of the previous one and adds more structure. Beginners often get confused about which to use — the answer is almost always <strong>DataFrame</strong>, but knowing why helps you use it correctly.</p>
+    <p>Spark has evolved over the years and introduced three different ways to represent distributed data. Each is built on top of the previous one and adds more structure. Beginners often get confused about which to use — the answer is almost always <strong>DataFrame</strong>, but understanding what happens under the hood helps you use it correctly and debug it when things go wrong.</p>
     <p><strong>RDD</strong> (Resilient Distributed Dataset) is the original low-level API — raw distributed collections you manipulate with functions. <strong>DataFrame</strong> adds a schema (named columns with types) so Spark can understand and optimise your data. <strong>Dataset</strong> adds compile-time type safety on top of DataFrame — but only in Scala and Java, not Python.</p>
+  </div>
+
+  <div class="card lb" style="margin-bottom:16px;">
+    <div class="lbl lbl-b">🔬 What actually happens when Spark loads a 1 TB table — an RDD walkthrough</div>
+    <p style="font-size:.87rem;color:var(--t2);line-height:1.7;margin-bottom:14px;">When you run <code>df = spark.read.parquet("s3://bucket/1tb_table/")</code>, Spark doesn't load anything into memory yet. What it does instead reveals exactly how RDDs work:</p>
+    <div class="g3" style="margin-bottom:14px;">
+      <div class="inset">
+        <strong style="color:var(--blue);">① The Blueprint — logical partition plan</strong>
+        <p style="font-size:.83rem;color:var(--t2);line-height:1.6;margin-top:6px;">Spark scans the file metadata and calculates how to split the data. With a 128 MB HDFS/S3 block size, 1 TB ÷ 128 MB = <strong>~8,000 partitions</strong>. The RDD is now a logical blueprint: "I am a collection of 8,000 chunks, and I know where each lives on disk." Nothing has been read yet.</p>
+      </div>
+      <div class="inset">
+        <strong style="color:var(--green);">② Resilient — fault recovery via lineage</strong>
+        <p style="font-size:.83rem;color:var(--t2);line-height:1.6;margin-top:6px;">You have 100 machines processing that 1 TB. Machine #42 crashes halfway through. Without RDD lineage, the whole job restarts. With it: Spark checks the lineage graph ("Read file → Filter rows → Map columns"), finds which 128 MB chunk Machine #42 owned, and tells a healthy machine to reprocess <em>just that chunk</em>. The job continues — no full restart.</p>
+      </div>
+      <div class="inset">
+        <strong style="color:var(--spark);">③ Distributed — processes bigger-than-RAM data</strong>
+        <p style="font-size:.83rem;color:var(--t2);line-height:1.6;margin-top:6px;">Each machine has only 16 GB of RAM, but you're processing 1 TB. This works because each task handles exactly <em>one partition</em>: Machine A grabs Partition #1 (128 MB), processes it, writes the result, then grabs Partition #101. You can process a 100 TB table on a cluster with 100 GB total RAM — Spark only keeps the active partitions in memory at any moment.</p>
+      </div>
+    </div>
+    <div class="callout callout-y">
+      <span class="icon">💡</span>
+      <span><strong>The key insight:</strong> Even when you use the DataFrame API (which you should), an RDD is doing the heavy lifting underneath. DataFrame just adds a schema and the Catalyst Optimizer on top. The distribution, partitioning, fault recovery, and memory management are all RDD behaviour — DataFrames inherit all of it for free.</span>
+    </div>
   </div>
 
   <div class="g3" style="margin-bottom:16px;">
@@ -1213,7 +1331,7 @@ ranked.filter(F.col(<span class="st">"rn"</span>) &lt;= <span class="nu">3</span
     <div class="lbl lbl-b">Frame specification — controlling which rows are "in the window"</div>
     <div class="g2">
       <div>
-        <p style="font-size:.87rem;color:var(--t2);line-height:1.7;margin-bottom:10px;">When you include <code>orderBy()</code> in a window, Spark adds a default frame of <strong>unboundedPreceding to currentRow</strong> (all rows from the start to now). This makes <code>sum()</code> compute a cumulative sum. You can override this with <code>rowsBetween()</code> or <code>rangeBetween()</code>.</p>
+        <p style="font-size:.87rem;color:var(--t2);line-height:1.7;margin-bottom:10px;">When you include <code>orderBy()</code> in a window, Spark adds a default frame of <strong>RANGE BETWEEN unboundedPreceding AND currentRow</strong>. This is a <em>range</em> frame — not a <em>rows</em> frame — which means it includes all rows that tie on the ORDER BY column value, not just physically preceding rows. This makes <code>sum()</code> compute a cumulative sum, but it can cause surprising results with <code>last()</code> or <code>first()</code> when there are ties. Override with <code>rowsBetween()</code> for physical-row semantics.</p>
         <p style="font-size:.87rem;color:var(--t2);line-height:1.7;"><strong>rowsBetween:</strong> physical row offsets from current row.<br><strong>rangeBetween:</strong> logical value range based on the ORDER BY column.</p>
       </div>
       <div class="cb"><span class="cm"># Moving average: current row ± 2 rows (5-row window)</span>
@@ -1246,6 +1364,30 @@ df.withColumn(<span class="st">"dept_total"</span>, F.sum(<span class="st">"sala
     <div class="analogy">
       <span class="ae">📋</span>
       <span><strong>Analogy:</strong> Imagine a spreadsheet that keeps having new rows added at the bottom automatically. Your SUM formula at the top updates every few seconds to include the latest rows. You didn't have to write any "streaming" logic — the formula is the same, the spreadsheet just keeps growing.</span>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card" style="border-left:3px solid var(--blue);">
+      <div class="lbl lbl-b">📖 Key Terms — Source &amp; Sink</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">Every streaming pipeline has two ends. A <strong>source</strong> is where data comes <em>from</em> — the thing Spark reads continuously. A <strong>sink</strong> is where processed data <em>goes</em> — the destination Spark writes to.</p>
+      <table class="tbl" style="margin-top:4px;">
+        <tr><th>Sources (read from)</th><th>Sinks (write to)</th></tr>
+        <tr><td>Apache Kafka topic</td><td>Apache Kafka topic</td></tr>
+        <tr><td>Directory of files (new files drop in)</td><td>Parquet / Delta Lake files</td></tr>
+        <tr><td>Socket (TCP — dev/testing only)</td><td>Database via JDBC</td></tr>
+        <tr><td>Rate source (synthetic — testing)</td><td>Console (dev only)</td></tr>
+        <tr><td>Delta Lake table (change feed)</td><td>Hive / catalog table</td></tr>
+      </table>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold);">
+      <div class="lbl lbl-g">📖 Key Term — Data Skew</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;"><strong>Data skew</strong> means the data is unevenly distributed across partitions — one partition has vastly more rows than the others. Because each partition is processed by exactly one task, a skewed partition becomes a <em>straggler</em>: all other executors finish and sit idle while one executor grinds through the giant partition alone.</p>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.72;margin-bottom:10px;">The classic cause: a join key where one value dominates. If 80% of your orders belong to one retailer, all 80% land on one executor during the join.</p>
+      <div class="callout callout-w">
+        <span class="icon">⚠</span>
+        <span><strong>How to spot it:</strong> In the Spark UI Stages tab, look at task duration. If one task takes 10× longer than the median, you have skew. Fix: enable AQE skew join handling, or manually add a random "salt" to the skewed key to spread the load across partitions.</span>
+      </div>
     </div>
   </div>
 
@@ -1474,7 +1616,61 @@ spark.conf.set(<span class="st">"spark.sql.adaptive.skewJoin.skewedPartitionFact
       </table>
     </div>
   </div>
-</div>
+
+  <div class="card lt" style="margin-bottom:16px;">
+    <div class="lbl lbl-t">🐼 Pandas UDFs — when you need custom Python logic without the serialisation penalty</div>
+    <p style="font-size:.87rem;color:var(--t2);line-height:1.7;margin-bottom:12px;">A regular Python UDF sends one row at a time between the JVM and the Python process — massive overhead. A <strong>Pandas UDF</strong> (also called a vectorised UDF) sends an entire partition as a Pandas Series or DataFrame in one go, processes it with native Pandas/NumPy operations, and returns the result in one round trip. Typically 10–100× faster than row-at-a-time UDFs.</p>
+    <div class="g2">
+      <div class="cb"><span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> pandas_udf
+<span class="kw">from</span> pyspark.sql.types <span class="kw">import</span> DoubleType
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># ── Scalar Pandas UDF — one value per row ─────────────</span>
+<span class="cm"># Input: Pandas Series. Output: Pandas Series of same length.</span>
+<span class="de">@pandas_udf</span>(DoubleType())
+<span class="kw">def</span> <span class="fn">apply_custom_score</span>(amount: pd.Series) -> pd.Series:
+    <span class="cm"># runs vectorised on the whole partition at once</span>
+    <span class="kw">return</span> (amount * <span class="nu">1.15</span>).clip(lower=<span class="nu">0</span>, upper=<span class="nu">10000</span>)
+
+df.withColumn(<span class="st">"score"</span>, apply_custom_score(<span class="st">"amount"</span>))
+
+<span class="cm"># ── Iterator of Series UDF — memory-efficient ─────────</span>
+<span class="cm"># Useful when the UDF needs to load a model once per partition</span>
+<span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> pandas_udf
+<span class="kw">from</span> typing <span class="kw">import</span> Iterator
+
+<span class="de">@pandas_udf</span>(DoubleType())
+<span class="kw">def</span> <span class="fn">score_with_model</span>(batch_iter: Iterator[pd.Series]) -> Iterator[pd.Series]:
+    model = load_my_model()  <span class="cm"># loaded ONCE per partition, not per row</span>
+    <span class="kw">for</span> batch <span class="kw">in</span> batch_iter:
+        <span class="kw">yield</span> pd.Series(model.predict(batch.values))
+
+df.withColumn(<span class="st">"prediction"</span>, score_with_model(<span class="st">"feature"</span>))</div>
+      <div class="cb"><span class="cm"># ── Group Map UDF — arbitrary transformation per group ─</span>
+<span class="cm"># Input: entire Pandas DataFrame for each group key.</span>
+<span class="cm"># Output: Pandas DataFrame (can have different shape).</span>
+<span class="kw">from</span> pyspark.sql.types <span class="kw">import</span> StructType, StructField, StringType, DoubleType
+
+output_schema = StructType([
+    StructField(<span class="st">"region"</span>, StringType()),
+    StructField(<span class="st">"normalised"</span>, DoubleType()),
+])
+
+<span class="de">@pandas_udf</span>(output_schema)
+<span class="kw">def</span> <span class="fn">normalise_within_group</span>(pdf: pd.DataFrame) -> pd.DataFrame:
+    <span class="cm"># pdf is one group's worth of data as a Pandas DataFrame</span>
+    pdf[<span class="st">"normalised"</span>] = (pdf[<span class="st">"amount"</span>] - pdf[<span class="st">"amount"</span>].mean()) \
+                       / pdf[<span class="st">"amount"</span>].std()
+    <span class="kw">return</span> pdf[[<span class="st">"region"</span>, <span class="st">"normalised"</span>]]
+
+df.groupby(<span class="st">"region"</span>).applyInPandas(normalise_within_group, schema=output_schema)
+
+<span class="cm"># ── Quick comparison ───────────────────────────────────</span>
+<span class="cm"># Row-at-a-time UDF: 1M rows → 1M JVM↔Python round trips</span>
+<span class="cm"># Pandas UDF:        1M rows → ~8 round trips (one per partition)</span>
+<span class="cm"># Built-in F.*:      0 round trips — runs entirely in JVM ← always prefer</span></div>
+    </div>
+  </div>
 
 <!-- ══════════ MLLIB ══════════ -->
 <div class="sec" id="mllib">
@@ -1754,9 +1950,109 @@ events = stream.select(
       </div>
     </div>
   </div>
-</div>
 
-</div><!-- end .wrap -->
+  <div class="card" style="margin-top:16px;">
+    <div class="lbl lbl-s">⚡ Quick Reference — the commands you'll use every day</div>
+    <div class="g3" style="gap:14px;">
+
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--spark);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">READ &amp; WRITE</p>
+        <div class="cb" style="margin:0;font-size:.72rem;">spark.read.parquet(<span class="st">"s3://..."</span>)
+spark.read.csv(<span class="st">"path"</span>, header=<span class="kw">True</span>, inferSchema=<span class="kw">True</span>)
+spark.read.json(<span class="st">"path"</span>)
+spark.read.format(<span class="st">"delta"</span>).load(<span class="st">"path"</span>)
+spark.read.schema(schema).parquet(<span class="st">"path"</span>)
+
+df.write.mode(<span class="st">"overwrite"</span>).parquet(<span class="st">"s3://..."</span>)
+df.write.mode(<span class="st">"append"</span>).parquet(<span class="st">"s3://..."</span>)
+df.write.partitionBy(<span class="st">"date"</span>).parquet(<span class="st">"s3://..."</span>)
+df.write.mode(<span class="st">"overwrite"</span>).saveAsTable(<span class="st">"db.tbl"</span>)
+df.coalesce(<span class="nu">1</span>).write.parquet(<span class="st">"out/"</span>)  <span class="cm"># one file</span></div>
+      </div>
+
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--teal);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">TRANSFORM &amp; FILTER</p>
+        <div class="cb" style="margin:0;font-size:.72rem;">df.select(<span class="st">"a"</span>, <span class="st">"b"</span>, F.col(<span class="st">"c"</span>).alias(<span class="st">"d"</span>))
+df.filter(F.col(<span class="st">"amount"</span>) > <span class="nu">0</span>)
+df.where(<span class="st">"status = 'active'"</span>)
+df.withColumn(<span class="st">"tax"</span>, F.col(<span class="st">"amt"</span>) * <span class="nu">0.2</span>)
+df.drop(<span class="st">"col1"</span>, <span class="st">"col2"</span>)
+df.withColumnRenamed(<span class="st">"old"</span>, <span class="st">"new"</span>)
+df.distinct()
+df.dropDuplicates([<span class="st">"user_id"</span>, <span class="st">"date"</span>])
+df.orderBy(F.col(<span class="st">"amount"</span>).desc())
+df.limit(<span class="nu">100</span>)
+df.fillna({<span class="st">"col"</span>: <span class="nu">0</span>})
+df.dropna(subset=[<span class="st">"user_id"</span>])</div>
+      </div>
+
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--blue);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">AGG, JOIN &amp; WINDOW</p>
+        <div class="cb" style="margin:0;font-size:.72rem;">df.groupBy(<span class="st">"region"</span>).agg(
+  F.count(<span class="st">"*"</span>).alias(<span class="st">"n"</span>),
+  F.sum(<span class="st">"amount"</span>).alias(<span class="st">"rev"</span>),
+  F.countDistinct(<span class="st">"user_id"</span>).alias(<span class="st">"users"</span>)
+)
+df1.join(df2, <span class="st">"key"</span>, <span class="st">"left"</span>)
+df1.join(broadcast(df2), <span class="st">"key"</span>)
+
+w = Window.partitionBy(<span class="st">"dept"</span>).orderBy(<span class="st">"salary"</span>)
+F.row_number().over(w)
+F.rank().over(w)
+F.lag(<span class="st">"salary"</span>, <span class="nu">1</span>).over(w)
+F.sum(<span class="st">"salary"</span>).over(Window.partitionBy(<span class="st">"dept"</span>))</div>
+      </div>
+
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">INSPECT &amp; DEBUG</p>
+        <div class="cb" style="margin:0;font-size:.72rem;">df.show(<span class="nu">20</span>, truncate=<span class="kw">False</span>)
+df.printSchema()
+df.dtypes
+df.columns
+df.count()
+df.describe().show()         <span class="cm"># stats for numeric cols</span>
+df.explain(<span class="kw">True</span>)            <span class="cm"># full query plan</span>
+df.rdd.getNumPartitions()
+spark.catalog.listTables()
+spark.sql(<span class="st">"SHOW TABLES"</span>).show()
+spark.conf.get(<span class="st">"spark.sql.shuffle.partitions"</span>)</div>
+      </div>
+
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--gold);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">PERFORMANCE</p>
+        <div class="cb" style="margin:0;font-size:.72rem;">df.cache()                  <span class="cm"># in-memory</span>
+df.persist(StorageLevel.MEMORY_AND_DISK)
+df.unpersist()
+df.repartition(<span class="nu">200</span>)         <span class="cm"># with shuffle</span>
+df.coalesce(<span class="nu">50</span>)             <span class="cm"># no shuffle</span>
+df.repartition(<span class="nu">200</span>, <span class="st">"key"</span>) <span class="cm"># hash partition</span>
+
+spark.conf.set(<span class="st">"spark.sql.shuffle.partitions"</span>, <span class="st">"400"</span>)
+spark.conf.set(<span class="st">"spark.sql.adaptive.enabled"</span>, <span class="st">"true"</span>)
+spark.conf.set(<span class="st">"spark.sql.autoBroadcastJoinThreshold"</span>, <span class="st">"50MB"</span>)</div>
+      </div>
+
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--red);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">STREAMING</p>
+        <div class="cb" style="margin:0;font-size:.72rem;">spark.readStream.format(<span class="st">"kafka"</span>) \
+  .option(<span class="st">"kafka.bootstrap.servers"</span>, <span class="st">"b:9092"</span>) \
+  .option(<span class="st">"subscribe"</span>, <span class="st">"topic"</span>).load()
+
+df.writeStream \
+  .outputMode(<span class="st">"update"</span>) \
+  .format(<span class="st">"console"</span>) \
+  .option(<span class="st">"checkpointLocation"</span>, <span class="st">"/tmp/cp"</span>) \
+  .trigger(processingTime=<span class="st">"30 seconds"</span>) \
+  .start()
+
+query.awaitTermination()
+query.stop()
+spark.streams.active       <span class="cm"># list running queries</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <div style="text-align:center;padding:56px 20px 32px;border-top:1px solid var(--border);margin-top:32px;">
   <div style="font-size:2.2rem;margin-bottom:10px;">🔥</div>
@@ -1795,12 +2091,49 @@ document.querySelectorAll('.cb').forEach(block => {
   block.title = 'Click to copy';
   block.addEventListener('click', () => {
     navigator.clipboard.writeText(block.innerText).then(() => {
-      const prev = block.style.outline;
-      block.style.outline = '2px solid rgba(209,64,10,0.5)';
-      setTimeout(() => { block.style.outline = prev; }, 600);
+      const flash = document.createElement('div');
+      flash.textContent = 'Copied!';
+      flash.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(209,64,10,0.07);border-radius:10px;font-family:"JetBrains Mono",monospace;font-size:.78rem;font-weight:700;color:var(--spark);pointer-events:none;opacity:0;transition:opacity .15s;';
+      block.style.position = 'relative';
+      block.appendChild(flash);
+      requestAnimationFrame(() => { flash.style.opacity = '1'; });
+      setTimeout(() => {
+        flash.style.opacity = '0';
+        setTimeout(() => flash.remove(), 200);
+      }, 700);
     });
   });
 });
+
+// ── Back to top button ────────────────────────────────────────────
+var topBtn = document.createElement('button');
+topBtn.innerHTML = '↑';
+topBtn.title = 'Back to top';
+topBtn.setAttribute('aria-label', 'Back to top');
+topBtn.style.cssText = [
+  'position:fixed','bottom:28px','right:28px',
+  'width:42px','height:42px','border-radius:50%',
+  'background:var(--spark)','color:#fff','border:none',
+  'font-size:1.1rem','font-weight:700','cursor:pointer',
+  'box-shadow:0 2px 12px rgba(209,64,10,0.32)',
+  'opacity:0','transform:translateY(8px)',
+  'transition:opacity 0.22s, transform 0.22s',
+  'z-index:999','display:flex','align-items:center',
+  'justify-content:center','line-height:1'
+].join(';');
+document.body.appendChild(topBtn);
+topBtn.addEventListener('click', function() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 400) {
+    topBtn.style.opacity = '1';
+    topBtn.style.transform = 'translateY(0)';
+  } else {
+    topBtn.style.opacity = '0';
+    topBtn.style.transform = 'translateY(8px)';
+  }
+}, { passive: true });
 </script>
 </body>
 </html>
