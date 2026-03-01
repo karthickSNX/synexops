@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apache Airflow — Battle-Ready Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F6F9FC;
+  --bg2:#E8EDF5;
+  --bg3:rgba(255,255,255,0.55);
+  --surface:rgba(255,255,255,0.68);
+  --surface2:rgba(255,255,255,0.50);
+  --border:rgba(180,195,220,0.45);
+  --border2:rgba(180,195,220,0.25);
+  --t1:#18202E;
+  --t2:#3D4E66;
+  --t3:#7A8AA0;
+  --air:#017CEE;
+  --airdim:rgba(1,124,238,0.08);
+  --airborder:rgba(1,124,238,0.22);
+  --gold:#F5A623;
+  --golddim:rgba(245,166,35,0.10);
+  --goldborder:rgba(245,166,35,0.25);
+  --teal:#2DD4C0;
+  --tealdim:rgba(45,212,192,0.10);
+  --tealborder:rgba(45,212,192,0.22);
+  --green:#4ADE80;
+  --greendim:rgba(74,222,128,0.09);
+  --greenborder:rgba(74,222,128,0.22);
+  --red:#FF5757;
+  --reddim:rgba(255,87,87,0.09);
+  --redborder:rgba(255,87,87,0.22);
+  --purple:#A78BFA;
+  --purpledim:rgba(167,139,250,0.09);
+  --purpleborder:rgba(167,139,250,0.22);
+  --orange:#FB923C;
+  --orangedim:rgba(251,146,60,0.09);
+  --orangeborder:rgba(251,146,60,0.22);
+  --r:12px;--r2:8px;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--t1);
+  line-height:1.7;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 85% 0%,rgba(180,210,245,0.35) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 60% at 0% 100%,rgba(200,225,245,0.25) 0%,transparent 60%);
+}
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-.03em;}
+code,.mono{font-family:'JetBrains Mono',monospace;}
+.wrap{max-width:1520px;margin:0 auto;padding:0 24px;}
+@media(max-width:900px){.wrap{padding:0 14px;}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.gauto{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+@media(max-width:900px){.g2,.g3,.g4,.gauto{grid-template-columns:1fr 1fr!important;}}
+@media(max-width:580px){.g2,.g3,.g4,.gauto{grid-template-columns:1fr!important;}}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;}
+.card-sm{padding:16px 18px;}
+.la{border-left:3px solid var(--air);}
+.lg{border-left:3px solid var(--gold);}
+.lt{border-left:3px solid var(--teal);}
+.lb{border-left:3px solid var(--green);}
+.lr{border-left:3px solid var(--red);}
+.lp{border-left:3px solid var(--purple);}
+.lo{border-left:3px solid var(--orange);}
+
+/* HERO */
+.hero{
+  padding:80px 24px 68px;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+  margin-bottom:48px;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--reddim);border:1px solid var(--redborder);
+  border-radius:4px;padding:4px 12px;
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;
+  color:var(--red);letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero h1{
+  font-size:clamp(2.8rem,7vw,5rem);
+  font-weight:800;
+  line-height:.95;
+  margin-bottom:22px;
+  color:var(--t1);
+}
+.hero h1 .accent{
+  color:var(--air);
+  position:relative;
+  display:inline-block;
+}
+.hero h1 .accent::after{
+  content:'';
+  position:absolute;left:0;bottom:-4px;right:0;height:3px;
+  background:linear-gradient(90deg,var(--air),var(--teal));
+  border-radius:2px;
+}
+.hero-sub{
+  font-size:1rem;color:var(--t2);max-width:580px;
+  line-height:1.75;margin-bottom:30px;
+  font-style:italic;
+}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{
+  padding:6px 18px;border-radius:999px;
+  font-size:.72rem;font-weight:600;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--t2);font-family:'JetBrains Mono',monospace;
+  text-decoration:none;transition:all .15s;letter-spacing:.04em;
+}
+.pill:hover{background:var(--airdim);color:var(--air);border-color:var(--airborder);}
+
+/* SECTION */
+.sec{margin-bottom:56px;}
+.sec-header{margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.sec-h{
+  font-size:1.65rem;font-weight:800;display:flex;align-items:center;gap:12px;margin-bottom:4px;
+}
+.sec-h .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:6px;
+  background:var(--air);color:#000;font-size:.75rem;
+  font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0;
+}
+.sec-h .num.red{background:var(--red);}
+.sec-h .num.gold{background:var(--gold);}
+.sec-h .num.teal{background:var(--teal);}
+.sec-h .num.green{background:var(--green);}
+.sec-h .num.purple{background:var(--purple);}
+.sec-h .num.orange{background:var(--orange);}
+.sec-sub{font-size:.78rem;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.04em;}
+
+/* LABELS */
+.lbl{display:inline-block;padding:2px 8px;border-radius:3px;font-size:.65rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:10px;}
+.la-lbl{background:var(--airdim);color:var(--air);border:1px solid var(--airborder);}
+.lg-lbl{background:var(--golddim);color:var(--gold);border:1px solid var(--goldborder);}
+.lt-lbl{background:var(--tealdim);color:var(--teal);border:1px solid var(--tealborder);}
+.lb-lbl{background:var(--greendim);color:var(--green);border:1px solid var(--greenborder);}
+.lr-lbl{background:var(--reddim);color:var(--red);border:1px solid var(--redborder);}
+.lp-lbl{background:var(--purpledim);color:var(--purple);border:1px solid var(--purpleborder);}
+.lo-lbl{background:var(--orangedim);color:var(--orange);border:1px solid var(--orangeborder);}
+
+/* CONCEPT BOX */
+.concept{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;margin-bottom:16px;}
+.concept p{font-size:.9rem;color:var(--t2);line-height:1.75;}
+.concept p+p{margin-top:10px;}
+.concept-title{font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--t1);font-family:'Inter',sans-serif;display:flex;align-items:center;gap:9px;}
+.analogy{margin-top:12px;padding:12px 16px;background:rgba(1,124,238,0.06);border:1px solid rgba(1,124,238,0.15);border-radius:var(--r2);font-size:.85rem;color:var(--t2);line-height:1.65;display:flex;gap:10px;}
+.analogy-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+
+/* CODE BLOCKS */
+.cb{
+  display:block;
+  background:#EDF1FA!important;
+  border:1.5px solid #BCCCE8!important;
+  border-radius:var(--r2);
+  padding:16px 18px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.74rem;line-height:1.9;
+  color:#1E2A3A!important;
+  white-space:pre;overflow-x:auto;
+  margin:10px 0;cursor:pointer;position:relative;
+}
+.cb:hover{border-color:rgba(1,124,238,0.45)!important;}
+.cb .kw{color:#6025C0;font-weight:600;}
+.cb .st{color:#1A6E35;}
+.cb .cm{color:#7A8FAA;font-style:italic;}
+.cb .nu{color:#B45A00;}
+.cb .fn{color:#6025C0;}
+.cb .de{color:#017CEE;font-weight:600;}
+.cb .bi{color:#F5A623;}
+.cb .err{color:#A02020;font-weight:600;}
+
+/* CALLOUTS */
+.callout{display:flex;gap:10px;border-radius:var(--r2);padding:11px 15px;font-size:.845rem;line-height:1.65;color:var(--t2);margin:8px 0;border:1px solid;}
+.callout .ci{font-size:.9rem;flex-shrink:0;margin-top:2px;}
+.callout strong{color:var(--t1);}
+.cw{background:var(--reddim);border-color:var(--redborder);}
+.cg{background:var(--greendim);border-color:var(--greenborder);}
+.ci{background:var(--airdim);border-color:var(--airborder);}
+.cy{background:var(--golddim);border-color:var(--goldborder);}
+.ct{background:var(--tealdim);border-color:var(--tealborder);}
+.cp{background:var(--purpledim);border-color:var(--purpleborder);}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem;}
+.tbl th{padding:9px 13px;font-weight:600;font-size:.72rem;text-align:left;background:rgba(255,255,255,0.50);border-bottom:1px solid var(--border);color:var(--t3);letter-spacing:.06em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.tbl td{padding:9px 13px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.55;color:var(--t2);}
+.tbl td strong{color:var(--t1);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--surface);}
+
+/* LISTS */
+.chk{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.chk li{display:flex;gap:9px;font-size:.85rem;line-height:1.55;color:var(--t2);}
+.chk li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono',monospace;}
+.warn li{display:flex;gap:9px;font-size:.85rem;line-height:1.55;color:var(--t2);list-style:none;}
+.warn li::before{content:'✗';color:var(--red);font-weight:700;flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono',monospace;}
+
+/* FLOW DIAGRAM */
+.flow-step{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r2);padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:.74rem;
+  font-weight:600;width:100%;
+}
+.flow-arr{color:var(--t3);padding-left:16px;font-family:'JetBrains Mono',monospace;font-size:.78rem;}
+
+/* BADGE / TAG */
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:.67rem;font-weight:600;font-family:'JetBrains Mono',monospace;}
+.ta{background:var(--airdim);color:var(--air);}
+.tg{background:var(--golddim);color:var(--gold);}
+.tt{background:var(--tealdim);color:var(--teal);}
+.tv{background:var(--greendim);color:var(--green);}
+.tr2{background:var(--reddim);color:var(--red);}
+.tp{background:var(--purpledim);color:var(--purple);}
+
+/* DAG STATE NODES */
+.dag-node{display:inline-flex;align-items:center;padding:6px 14px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;border:1px solid;white-space:nowrap;}
+.ds-success{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:var(--green);}
+.ds-running{background:rgba(59,158,255,0.1);border-color:rgba(59,158,255,0.3);color:var(--air);}
+.ds-failed{background:rgba(255,87,87,0.1);border-color:rgba(255,87,87,0.3);color:var(--red);}
+.ds-queued{background:rgba(85,96,112,0.2);border-color:rgba(85,96,112,0.3);color:var(--t3);}
+.ds-skipped{background:rgba(245,166,35,0.1);border-color:rgba(245,166,35,0.3);color:var(--gold);}
+.ds-zombie{background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3);color:var(--orange);}
+.dag-arr{color:var(--t3);}
+
+/* FLOATNAV */
+.floatnav{
+  position:sticky;top:10px;z-index:400;
+  display:flex;flex-wrap:wrap;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.88);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:10px 14px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  margin-bottom:36px;
+}
+.floatnav-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;padding-right:6px;white-space:nowrap;}
+.floatnav a{padding:5px 14px;border-radius:999px;font-size:.69rem;font-weight:600;font-family:'JetBrains Mono',monospace;text-decoration:none;color:var(--t3);background:transparent;border:1px solid transparent;transition:all .15s;white-space:nowrap;}
+.floatnav a:hover,.floatnav a.active{background:var(--airdim);color:var(--air);border-color:var(--airborder);}
+
+/* SENIOR CALLOUT — special styling */
+.senior-box{
+  background:linear-gradient(135deg,rgba(1,124,238,0.05),rgba(91,46,166,0.05));
+  border:1px solid rgba(1,124,238,0.18);
+  border-radius:var(--r);padding:20px 22px;
+  position:relative;overflow:hidden;
+  margin-bottom:16px;
+}
+.senior-box::before{
+  content:'SENIOR INSIGHT';
+  position:absolute;top:14px;right:16px;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;
+  font-weight:700;letter-spacing:.12em;
+  color:rgba(1,124,238,0.35);
+}
+.senior-box p{font-size:.88rem;color:var(--t2);line-height:1.75;}
+
+/* INCIDENT BOX — war stories */
+.incident{
+  background:rgba(160,32,32,0.06);
+  border:1px solid var(--redborder);
+  border-left:4px solid var(--red);
+  border-radius:var(--r2);padding:14px 18px;
+  margin:8px 0;
+}
+.incident-title{font-size:.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:6px;}
+.incident p{font-size:.85rem;color:var(--t2);line-height:1.65;}
+
+strong{font-weight:600;color:var(--t1);}
+em{font-style:italic;color:var(--t2);}
+.inset{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;font-size:.85rem;color:var(--t2);line-height:1.65;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width:.75em;height:.75em;vertical-align:-.05em;margin-right:.15em;display:inline-block;flex-shrink:0;" aria-hidden="true">
+  <!-- Airflow logo: stylised swoosh/wing shape -->
+  <defs>
+    <linearGradient id="ag1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#017CEE"/>
+      <stop offset="100%" stop-color="#00C7D4"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer arc / top wing -->
+  <path d="M32 6 C18 6 7 17 7 31 C7 38 10 44 15 48 L20 42 C17 39 15 35 15 31 C15 21 22 14 32 14 C42 14 49 21 49 31 C49 35 47 39 44 42 L49 48 C54 44 57 38 57 31 C57 17 46 6 32 6Z" fill="url(#ag1)"/>
+  <!-- Inner circle / hub -->
+  <circle cx="32" cy="31" r="8" fill="url(#ag1)"/>
+  <!-- Left spoke -->
+  <rect x="10" y="29" width="14" height="4" rx="2" fill="url(#ag1)" transform="rotate(-15 17 31)"/>
+  <!-- Right spoke -->
+  <rect x="40" y="29" width="14" height="4" rx="2" fill="url(#ag1)" transform="rotate(15 47 31)"/>
+  <!-- Bottom tail -->
+  <path d="M28 39 L32 54 L36 39Z" fill="url(#ag1)" opacity=".75"/>
+</svg>Apache <span class="accent">Airflow</span></h1>
+    <p class="hero-sub">Every concept explained plainly first, then shown in real Python code. Built for engineers who own pipelines — not just read about them.</p>
+    <div class="pill-row">
+      <a href="#what"        class="pill">01 · What it Is</a>
+      <a href="#arch"        class="pill">02 · Architecture</a>
+      <a href="#dags"        class="pill">03 · DAGs & Tasks</a>
+      <a href="#idempotency" class="pill">04 · Idempotency ★</a>
+      <a href="#operators"   class="pill">05 · Operators</a>
+      <a href="#taskflow"    class="pill">06 · TaskFlow</a>
+      <a href="#scheduling"  class="pill">07 · Scheduling</a>
+      <a href="#executors"   class="pill">08 · Executors</a>
+      <a href="#connections" class="pill">09 · Connections</a>
+      <a href="#xcoms"       class="pill">10 · XCom</a>
+      <a href="#branching"   class="pill">11 · Branching</a>
+      <a href="#sensors"     class="pill">12 · Sensors</a>
+      <a href="#antipatterns" class="pill">13 · Anti-Patterns ★</a>
+      <a href="#zombies"     class="pill">14 · Zombies ★</a>
+      <a href="#observability" class="pill">15 · Observability ★</a>
+      <a href="#cicd"        class="pill">16 · CI/CD ★</a>
+      <a href="#production"  class="pill">17 · Production</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(180,195,220,0.35);border-radius:20px;padding:32px 32px 40px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 2px 40px rgba(30,60,120,0.07),0 1px 6px rgba(30,60,120,0.04);">
+
+<nav class="floatnav">
+  <span class="floatnav-label">§ Jump</span>
+  <a href="#what">What is It</a>
+  <a href="#arch">Architecture</a>
+  <a href="#dags">DAGs</a>
+  <a href="#idempotency">Idempotency ★</a>
+  <a href="#operators">Operators</a>
+  <a href="#taskflow">TaskFlow</a>
+  <a href="#scheduling">Scheduling</a>
+  <a href="#executors">Executors</a>
+  <a href="#connections">Connections</a>
+  <a href="#xcoms">XCom</a>
+  <a href="#branching">Branching</a>
+  <a href="#sensors">Sensors</a>
+  <a href="#antipatterns">Anti-Patterns ★</a>
+  <a href="#zombies">Zombies ★</a>
+  <a href="#observability">Observability ★</a>
+  <a href="#cicd">CI/CD ★</a>
+  <a href="#production">Production</a>
+</nav>
+
+<!-- ══════════ 1. WHAT IS AIRFLOW ══════════ -->
+<div class="sec" id="what">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num">01</span> What is Apache Airflow?</div>
+    <div class="sec-sub">The orchestrator. Not the compute engine. Understand the difference before you write a single task.</div>
+  </div>
+
+  <div class="concept la">
+    <div class="concept-title">🪂 The one-sentence definition that actually sticks</div>
+    <p>Airflow is a <strong>workflow orchestrator</strong> — it tells other tools when to run, in what order, and what to do when they fail. It does not move data. It does not transform data. It coordinates the tools that do.</p>
+    <p>Created at Airbnb in 2014, the core philosophy is <strong>configuration as code</strong>: workflows are Python files checked into Git, not clicks in a GUI. That makes them testable, reviewable, and as flexible as Python itself.</p>
+    <div class="analogy">
+      <span class="analogy-icon">🎼</span>
+      <span><strong>The Conductor Analogy</strong> — keep this one forever. Airflow is the conductor, not the musician. The conductor doesn't play any instrument. They coordinate when each section enters, stop the performance if someone falls apart, and restart the brass if the woodwinds weren't ready. Airflow coordinates your data tools. It never touches your data — it ensures the right tools run in the right order with the right inputs.</span>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">The concrete problem it solves</div>
+      <p style="font-size:.88rem;color:var(--t2);line-height:1.75;margin-bottom:10px;">You have five pipeline steps wired with cron. Step 3 usually takes 40 minutes — today it took 90. Step 4 fired on schedule before step 3 finished. dbt ran on stale data. Reports went out wrong. Nobody noticed until 10 AM.</p>
+      <p style="font-size:.88rem;color:var(--t2);line-height:1.75;margin-bottom:10px;"><strong>With Airflow:</strong> step 4 has a declared dependency on step 3. The scheduler waits until step 3 is marked <span style="color:var(--green);">success</span> — period. Step 3 takes 90 minutes? Step 4 starts 90 minutes later. Step 3 fails? The chain stops, retries fire, you get paged. The business never sees wrong data.</p>
+    </div>
+    <div>
+      <div class="card lb" style="margin-bottom:14px;">
+        <div class="lbl lb-lbl">Airflow IS built for</div>
+        <ul class="chk" style="gap:5px;">
+          <li>Batch ETL — daily/hourly extract → transform → load sequences</li>
+          <li>dbt orchestration — schedule, sequence, retry dbt model runs</li>
+          <li>ML training pipelines — feature prep → train → evaluate → deploy</li>
+          <li>Multi-system coordination — Spark, BigQuery, Snowflake, REST APIs</li>
+          <li>Historical backfills — replay any date range with one command</li>
+        </ul>
+      </div>
+      <div class="card lr">
+        <div class="lbl lr-lbl">Airflow is NOT for</div>
+        <ul class="warn" style="gap:5px;">
+          <li><strong>Streaming</strong> — minimum granularity is minutes. Use Kafka + Flink.</li>
+          <li><strong>Data processing</strong> — it runs Spark; it doesn't replace it</li>
+          <li><strong>Real-time triggers</strong> — sub-second latency needs an event bus</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl lg-lbl">Airflow vs alternatives — pick the right tool</div>
+    <table class="tbl">
+      <tr><th>Tool</th><th>Best for</th><th>Choose Airflow when…</th></tr>
+      <tr><td><strong>Cron + shell</strong></td><td>Simple independent jobs</td><td>You need dependency management, retries, audit history, scale</td></tr>
+      <tr><td><strong>Prefect</strong></td><td>Python-native flows, modern UX</td><td>You need the largest operator ecosystem or self-hosted maturity</td></tr>
+      <tr><td><strong>Dagster</strong></td><td>Asset-oriented, strong data lineage</td><td>Your team thinks in tasks more than assets</td></tr>
+      <tr><td><strong>dbt</strong></td><td>SQL transformations + testing</td><td>Not either/or — Airflow orchestrates dbt. Use both.</td></tr>
+      <tr><td><strong>Step Functions</strong></td><td>AWS-native serverless workflows</td><td>You're multi-cloud or want code-first portability</td></tr>
+    </table>
+  </div>
+
+  <div class="card la">
+    <div class="lbl la-lbl">🐳 Local-to-prod parity — the only setup that matters</div>
+    <p style="font-size:.87rem;color:var(--t2);line-height:1.7;margin-bottom:12px;">The Docker Compose setup mirrors a real CeleryExecutor deployment: scheduler, webserver, worker, Postgres, Redis. This is how you debug. This is how you catch issues before they hit prod. <code>airflow standalone</code> exists for your first 5 minutes — then you move here and never look back.</p>
+    <div class="g2">
+      <div class="cb"><span class="cm"># Fetch the official compose file</span>
+curl -LfO 'https://airflow.apache.org/docs/\
+apache-airflow/stable/docker-compose.yaml'
+
+mkdir -p ./dags ./logs ./plugins ./config
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+
+<span class="cm"># Initialize metadata DB</span>
+docker compose up airflow-init
+
+<span class="cm"># Start all services</span>
+docker compose up -d
+
+<span class="cm"># UI:    http://localhost:8080 (admin/admin)
+# DAGs:  ./dags/  (hot-reload every 30s)
+# Scale workers:</span>
+docker compose up --scale airflow-worker=<span class="nu">4</span></div>
+      <div>
+        <div class="callout cg" style="margin-bottom:10px;">
+          <span class="ci">✓</span>
+          <span><strong>The parity principle:</strong> mount your local <code>./dags/</code> into the compose scheduler. Changes appear in the UI within 30 seconds — same as prod. If it works here, it works there.</span>
+        </div>
+        <div class="callout cy">
+          <span class="ci">⚠</span>
+          <span><strong>SQLite + SequentialExecutor</strong> are dev-only artifacts. One task at a time, no parallelism. If you inherit a system using these in production, treat it as a P0 issue. You are not debugging an Airflow problem — you are debugging a configuration problem.</span>
+        </div>
+        <div class="callout ci">
+          <span class="ci">💡</span>
+          <span>Set <code>AIRFLOW__CORE__EXECUTOR=CeleryExecutor</code> in your local compose even for a one-person project. The earlier you debug Celery-specific behaviors (task serialization, broker timeouts), the fewer surprises in production.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 2. ARCHITECTURE ══════════ -->
+<div class="sec" id="arch">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num red">02</span> Architecture</div>
+    <div class="sec-sub">Five components. Each fails differently. Know where the money goes.</div>
+  </div>
+
+  <div class="concept lr">
+    <div class="concept-title">🏗 The diagnostic mental model</div>
+    <p>When something breaks at 2am, the first question is always: <em>which component is sick?</em> Scheduler, Executor, Webserver, Metadata DB, and Workers each have completely different failure signatures. Misidentifying costs hours. This section gives you the model to answer in 30 seconds.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl la-lbl">Component overview — with the cost column</div>
+    <table class="tbl">
+      <tr>
+        <th>Component</th>
+        <th>What it owns</th>
+        <th>Cost profile</th>
+        <th>Failure symptom</th>
+      </tr>
+      <tr>
+        <td><strong>Scheduler</strong></td>
+        <td>Parses DAG files every 30s. Decides what runs and when. Sends tasks to executor.</td>
+        <td><strong style="color:var(--red);">High CPU.</strong> Every DAG file is imported every 30s. Module-level I/O here destroys CPU.</td>
+        <td>Tasks stop being created. DAG runs fall behind schedule.</td>
+      </tr>
+      <tr>
+        <td><strong>Workers</strong></td>
+        <td>Actually execute task code. Process per task (Celery) or pod per task (K8s).</td>
+        <td><strong style="color:var(--red);">High Memory.</strong> This is where OOMs happen. Pandas DataFrames, large model loads, memory leaks in task callables.</td>
+        <td>Tasks silently disappear with no log output — SIGKILL leaves no Python trace.</td>
+      </tr>
+      <tr>
+        <td><strong>Metadata DB</strong></td>
+        <td>Stores every task state, DAG run, connection, variable, XCom, and log pointer.</td>
+        <td><strong style="color:var(--red);">High IOPS.</strong> Scheduler writes a state transition per task state change. At scale this is your first bottleneck, not workers.</td>
+        <td>Scheduler slows. UI becomes sluggish. Tasks queue but never start.</td>
+      </tr>
+      <tr>
+        <td><strong>Webserver</strong></td>
+        <td>Flask app. Reads from DB to render UI. Trigger runs, clear tasks, manage connections.</td>
+        <td><strong>Low–medium.</strong> Read-mostly from DB. Scales independently.</td>
+        <td>UI down but pipelines still run. DB queries slow = UI slow.</td>
+      </tr>
+      <tr>
+        <td><strong>Executor</strong></td>
+        <td>Plugin inside scheduler. Routes tasks to execution environment.</td>
+        <td><strong>Inherited</strong> from chosen executor (Celery broker, K8s API server).</td>
+        <td>Tasks queue indefinitely. Broker or K8s API unreachable.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">Full execution path — scheduled → done</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+        <div class="flow-step" style="border-color:var(--airborder);color:var(--air);">📁 Scheduler parses dags/my_dag.py every 30s</div>
+        <div class="flow-arr">↓  schedule interval elapsed + all upstreams success</div>
+        <div class="flow-step" style="border-color:var(--goldborder);color:var(--gold);">📋 Task instance created → state: "scheduled"</div>
+        <div class="flow-arr">↓  executor picks up the task instance</div>
+        <div class="flow-step" style="border-color:var(--purpleborder);color:var(--purple);">📤 Placed on queue (Redis / K8s API / subprocess)</div>
+        <div class="flow-arr">↓  state: "queued"  →  worker picks it</div>
+        <div class="flow-step" style="border-color:var(--airborder);color:var(--air);">⚙ Worker executes task code → state: "running"</div>
+        <div class="flow-arr">↓  function returns without raising</div>
+        <div class="flow-step" style="border-color:var(--greenborder);color:var(--green);">✅ State written to DB: "success" → downstream unblocked</div>
+      </div>
+    </div>
+    <div>
+      <div class="lbl lr-lbl" style="margin-bottom:8px;">🔍 Where is my task stuck? — 30-second triage</div>
+      <table class="tbl" style="margin-bottom:14px;">
+        <tr><th>Symptom</th><th>Root cause</th></tr>
+        <tr><td>Never leaves "scheduled"</td><td>Executor at max capacity — check <code>parallelism</code> config and worker count</td></tr>
+        <tr><td>Stuck in "queued" for minutes</td><td>Workers down, or broker (Redis/RabbitMQ) unreachable</td></tr>
+        <tr><td>Starts then silently disappears</td><td><strong>Worker OOM killed</strong> — check worker system memory, not Airflow logs</td></tr>
+        <tr><td>DAG missing from UI</td><td>Syntax error — run <code>airflow dags list-import-errors</code> immediately</td></tr>
+        <tr><td>Hundreds of old runs suddenly created</td><td><code>catchup=True</code> with historical start_date — set <code>catchup=False</code></td></tr>
+        <tr><td>Task stuck in "running" but worker is dead</td><td><strong>Zombie task</strong> — see Section 13</td></tr>
+        <tr><td>UI slow but pipelines running</td><td>Metadata DB IOPS saturated — check DB metrics, not Airflow logs</td></tr>
+        <tr><td>Scheduler not creating new runs</td><td>DAG is paused, or scheduler heartbeat timed out — check heartbeat metric</td></tr>
+      </table>
+
+      <div class="senior-box">
+        <p><strong>The OOM debugging path every senior knows:</strong> Task disappears with no log output. No Python exception. No stack trace. You look in Airflow logs — nothing. This is SIGKILL from the kernel OOM killer. The evidence is in worker <em>system</em> metrics (dmesg, CloudWatch, Datadog) not Airflow. Fix: increase worker memory, or reduce task footprint by streaming data instead of loading full DataFrames.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card lg">
+    <div class="lbl lg-lbl">📖 Airflow vocabulary — every term that appears in incident postmortems</div>
+    <div class="g2">
+      <table class="tbl">
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td><strong>DAG</strong></td><td>Your entire workflow as a Python file. Directed Acyclic Graph — tasks + dependencies.</td></tr>
+        <tr><td><strong>Task Instance</strong></td><td>One execution of one task in one DAG Run. Has its own state, logs, and XCom.</td></tr>
+        <tr><td><strong>DAG Run</strong></td><td>One full execution of your DAG for one data window.</td></tr>
+        <tr><td><strong>Data Window</strong></td><td>The interval a run covers. <strong>Not when it ran</strong> — when the data it processes is from.</td></tr>
+        <tr><td><strong>Logical Date</strong></td><td>Formal name for Data Window Start. <code>{{ ds }}</code> in templates.</td></tr>
+        <tr><td><strong>Zombie Task</strong></td><td>Task the DB thinks is running, but the worker process is dead. Section 13 covers this fully.</td></tr>
+        <tr><td><strong>Poison Pill</strong></td><td>A task that will always fail for current data, burning retry slots and blocking downstream.</td></tr>
+      </table>
+      <table class="tbl">
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td><strong>Sensor</strong></td><td>Polls a condition until true or timeout. Use reschedule mode or burn worker slots.</td></tr>
+        <tr><td><strong>Hook</strong></td><td>The auth/connection layer for external systems. PostgresHook, S3Hook, SnowflakeHook.</td></tr>
+        <tr><td><strong>XCom</strong></td><td>Cross-task communication. For paths and counts — never DataFrames.</td></tr>
+        <tr><td><strong>Connection</strong></td><td>Named credential bundle. Reference by conn_id, never hardcode credentials.</td></tr>
+        <tr><td><strong>Pool</strong></td><td>Named semaphore. "Max 5 tasks may query prod DB simultaneously."</td></tr>
+        <tr><td><strong>Backfill</strong></td><td>Running a DAG for historical dates. Only works correctly if tasks are idempotent.</td></tr>
+        <tr><td><strong>Provider</strong></td><td>Installable package adding operators/hooks for a platform (AWS, GCP, Snowflake…)</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 3. DAGs & TASKS ══════════ -->
+<div class="sec" id="dags">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num gold">03</span> DAGs &amp; Tasks</div>
+    <div class="sec-sub">Two gotchas that burn every engineer. Learn them now, not at 3am.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="incident">
+      <div class="incident-title">⚡ Gotcha #1 — Module-level code runs in the scheduler</div>
+      <p>A DAG file is a Python script that Airflow imports. Every Python statement <em>outside</em> a function runs inside the scheduler process every 30 seconds. A database connection, HTTP call, or expensive import at module level = you are DoS'ing your own scheduler. Every database query, API call, and slow operation belongs <em>inside</em> a task callable — never at module level.</p>
+    </div>
+    <div class="incident">
+      <div class="incident-title">⚡ Gotcha #2 — The Data Window is backwards</div>
+      <p>A <code>@daily</code> DAG fires at midnight January 2nd. Its <code>{{ ds }}</code> is <code>2024-01-01</code>. It processes yesterday's completed data — not today's in-progress data. This is intentional. <strong>Never use <code>datetime.now()</code> in tasks.</strong> Backfill 30 days and every run gets today's date. Use <code>{{ ds }}</code> which correctly reflects each run's data window.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl la-lbl">The "Data Window" mental model — rebrand this in your team's vocabulary</div>
+    <div class="g2">
+      <div>
+        <p style="font-size:.88rem;color:var(--t2);line-height:1.75;margin-bottom:12px;">Stop saying "execution date." Stop saying "logical date." Say <strong>Data Window.</strong> When you see <code>2024-01-01</code>, say out loud: <em>"I am looking at January 1st's data."</em> That mental shift prevents 90% of off-by-one errors in SQL queries.</p>
+        <div class="callout cy">
+          <span class="ci">⚠</span>
+          <span><code>execution_date</code> still appears in old code and docs everywhere. It's deprecated. It equals <code>logical_date</code> which equals <code>data_interval_start</code>. They're the same thing with different names across Airflow versions. The important one: it's the <em>start</em> of the window the run covers.</span>
+        </div>
+      </div>
+      <div class="inset">
+        <strong style="font-family:'JetBrains Mono',monospace;font-size:.76rem;display:block;margin-bottom:10px;color:var(--t1);">DAG: schedule="@daily"</strong>
+        <div style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.71rem;">
+          <div style="color:var(--t3);">Jan 1 00:00 ── data window opens</div>
+          <div style="border-left:2px dashed var(--border);margin-left:6px;padding-left:10px;color:var(--t3);line-height:2.2;">January 1st data accumulates...</div>
+          <div style="color:var(--air);font-weight:700;">Jan 2 00:00 ── Run fires 🔵</div>
+          <div style="background:rgba(59,158,255,0.08);border:1px solid var(--airborder);border-radius:6px;padding:10px 12px;">
+            <div style="color:var(--air);font-weight:700;">{{ ds }}          = "2024-01-01"</div>
+            <div style="color:var(--t3);margin-top:4px;">{{ ds_nodash }}   = "20240101"</div>
+            <div style="color:var(--t3);">data_interval_start = 2024-01-01T00:00</div>
+            <div style="color:var(--t3);">data_interval_end   = 2024-01-02T00:00</div>
+          </div>
+          <div style="color:var(--t3);font-size:.69rem;font-style:italic;">Run on Jan 2. Processing Jan 1's data. That's correct.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card la" style="margin-bottom:16px;">
+    <div class="lbl la-lbl">Production-quality annotated DAG</div>
+    <div class="g2">
+      <div class="cb"><span class="kw">from</span> airflow.decorators <span class="kw">import</span> dag, task
+<span class="kw">from</span> airflow.operators.bash <span class="kw">import</span> BashOperator
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime, timedelta
+
+default_args = {
+    <span class="st">'owner'</span>: <span class="st">'data-engineering'</span>,
+    <span class="st">'retries'</span>: <span class="nu">2</span>,
+    <span class="st">'retry_delay'</span>: timedelta(minutes=<span class="nu">5</span>),
+    <span class="st">'email_on_failure'</span>: <span class="kw">True</span>,
+    <span class="st">'email'</span>: [<span class="st">'de-oncall@company.com'</span>],
+}
+
+<span class="de">@dag</span>(
+    dag_id=<span class="st">'daily_sales_pipeline'</span>,
+    start_date=datetime(<span class="nu">2024</span>, <span class="nu">1</span>, <span class="nu">1</span>),  <span class="cm"># NEVER datetime.now()</span>
+    schedule=<span class="st">'0 6 * * *'</span>,
+    catchup=<span class="kw">False</span>,              <span class="cm"># ALWAYS explicit</span>
+    max_active_runs=<span class="nu">1</span>,
+    dagrun_timeout=timedelta(hours=<span class="nu">2</span>),
+    default_args=default_args,
+    tags=[<span class="st">'sales'</span>, <span class="st">'daily'</span>, <span class="st">'critical'</span>],
+    doc_md=<span class="st">"""
+    ### Daily Sales Pipeline
+    Processes previous day's sales.
+    **Owner**: data-engineering
+    **SLA**: complete by 08:00 UTC
+    **Runbook**: confluence.company.com/airflow/daily-sales
+    """</span>,
+)
+<span class="kw">def</span> <span class="fn">daily_sales_pipeline</span>():
+
+    <span class="de">@task</span>()
+    <span class="kw">def</span> <span class="fn">extract_sales</span>(ds=<span class="kw">None</span>) -> dict:
+        rows = query_postgres(
+            <span class="st">f"SELECT * FROM sales WHERE date='{ds}'"</span>)
+        s3_path = write_to_s3(rows, ds)
+        <span class="kw">return</span> {<span class="st">'row_count'</span>: len(rows), <span class="st">'s3_path'</span>: s3_path}
+
+    <span class="de">@task</span>()
+    <span class="kw">def</span> <span class="fn">validate_data</span>(extract_result: dict, ds=<span class="kw">None</span>):
+        assert extract_result[<span class="st">'row_count'</span>] > <span class="nu">0</span>, \
+            <span class="st">f"Zero rows for {ds} — is upstream source healthy?"</span>
+
+    run_dbt = BashOperator(
+        task_id=<span class="st">'run_dbt'</span>,
+        bash_command=<span class="st">'dbt run --select tag:daily --vars \'{"date":"{{ ds }}"}\''</span>,
+    )
+
+    result = <span class="fn">extract_sales</span>()
+    validated = <span class="fn">validate_data</span>(result)
+    validated >> run_dbt
+
+<span class="fn">daily_sales_pipeline</span>()</div>
+      <div>
+        <table class="tbl" style="margin-bottom:12px;">
+          <tr><th>Parameter</th><th>Rule</th></tr>
+          <tr><td><code>start_date</code></td><td>Always static. <code>datetime(2024,1,1)</code> — never <code>datetime.now()</code></td></tr>
+          <tr><td><code>catchup</code></td><td><strong>Always <code>False</code></strong> unless explicitly backfilling</td></tr>
+          <tr><td><code>max_active_runs</code></td><td><code>1</code> for sequential pipelines — prevent data races</td></tr>
+          <tr><td><code>dagrun_timeout</code></td><td>Always set — prevents zombie runs accumulating</td></tr>
+          <tr><td><code>doc_md</code></td><td>Runbook link required for critical DAGs</td></tr>
+          <tr><td><code>tags</code></td><td>team + domain + frequency minimum</td></tr>
+        </table>
+        <div class="callout cw">
+          <span class="ci">⚠</span>
+          <span><strong>The catchup trap.</strong> Deploy with <code>start_date=datetime(2023,1,1)</code> and <code>catchup=True</code> (the default). Airflow immediately creates ~365 runs flooding every worker slot. Always set <code>catchup=False</code> explicitly. Always.</span>
+        </div>
+        <div class="callout ci" style="margin-top:8px;">
+          <span class="ci">💡</span>
+          <span>Dependency patterns: <code>a >> b</code> sequential. <code>a >> [b,c]</code> fan-out. <code>[a,b] >> c</code> fan-in (c waits for both). Tasks inside a list run in parallel — they have no dependency on each other.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 4. IDEMPOTENCY ══════════ -->
+<div class="sec" id="idempotency">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num teal">04</span> Idempotency &amp; Determinism <span style="font-size:.7rem;color:var(--teal);font-family:'JetBrains Mono',monospace;margin-left:8px;">★ SENIOR ESSENTIAL</span></div>
+    <div class="sec-sub">The most important concept in production data engineering. This is the difference between a pipeline you trust and one you fear.</div>
+  </div>
+
+  <div class="concept lt">
+    <div class="concept-title">🔁 The idempotency test — apply it to every task you write</div>
+    <p><strong>Run your task 10 times for the same data window. Does it produce the same final result as running it once?</strong> If yes: your task is idempotent. If no: you have a bug that will eventually cause a 3am page.</p>
+    <p>This matters because tasks fail and get retried. Backfills re-run historical data. Engineers manually clear and re-run tasks to fix issues. Every one of these scenarios runs your task more than once. If "run twice" produces different results than "run once," your data is wrong and you may not know it.</p>
+    <div class="analogy">
+      <span class="analogy-icon">🏗</span>
+      <span><strong>The contractor test:</strong> a good contractor can redo a tile they messed up. They remove the bad tile and re-lay it correctly. The end result is identical to if they'd done it right the first time. A bad contractor just lays the new tile on top — now you have two tiles, and the wall is wrong. Your tasks need to be the good contractor.</span>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card lr">
+      <div class="lbl lr-lbl">❌ Non-idempotent patterns — will cause incidents</div>
+      <div class="cb"><span class="cm"># ❌ Plain INSERT — run twice = duplicate rows</span>
+cursor.execute(<span class="st">"""
+    INSERT INTO sales_summary (date, revenue)
+    SELECT date, SUM(revenue) FROM sales
+    WHERE date = '{{ ds }}'
+    GROUP BY date
+"""</span>)
+
+<span class="cm"># ❌ Blind append to a file — run twice = double data</span>
+df.to_csv(<span class="st">f"s3://reports/{{ ds }}/summary.csv"</span>,
+          mode=<span class="st">'a'</span>)
+
+<span class="cm"># ❌ Using datetime.now() for date logic</span>
+<span class="kw">def</span> <span class="fn">process</span>(**context):
+    today = datetime.now().strftime(<span class="st">'%Y-%m-%d'</span>)  <span class="err"># WRONG</span>
+    query_data(today)
+    <span class="cm"># backfill 30 days → every run queries today's data</span>
+
+<span class="cm"># ❌ Global counter with no reset</span>
+<span class="kw">def</span> <span class="fn">update_count</span>():
+    current = get_counter()
+    set_counter(current + <span class="nu">1</span>)  <span class="err"># run twice = counted twice</span></div>
+    </div>
+    <div class="card lb">
+      <div class="lbl lb-lbl">✅ Idempotent patterns — run these 10 times safely</div>
+      <div class="cb"><span class="cm"># ✅ UPSERT — run twice = same result</span>
+cursor.execute(<span class="st">"""
+    INSERT INTO sales_summary (date, revenue)
+    SELECT date, SUM(revenue) FROM sales
+    WHERE date = '{{ ds }}'
+    GROUP BY date
+    ON CONFLICT (date)
+    DO UPDATE SET revenue = EXCLUDED.revenue
+"""</span>)
+
+<span class="cm"># ✅ Overwrite partition — run twice = same file</span>
+df.to_parquet(<span class="st">f"s3://warehouse/sales/date={{ ds }}/data.parquet"</span>)
+<span class="cm"># S3 overwrites by key — running again just replaces it</span>
+
+<span class="cm"># ✅ Always use {{ ds }}, never datetime.now()</span>
+<span class="kw">def</span> <span class="fn">process</span>(ds=<span class="kw">None</span>, **context):
+    query_data(ds)  <span class="cm"># correct regardless of when task runs</span>
+
+<span class="cm"># ✅ DELETE + INSERT pattern</span>
+<span class="kw">def</span> <span class="fn">load</span>(ds=<span class="kw">None</span>):
+    conn.execute(
+        <span class="st">f"DELETE FROM sales_summary WHERE date = '{ds}'"</span>)
+    conn.execute(
+        <span class="st">f"INSERT INTO sales_summary ... WHERE date = '{ds}'"</span>)
+    <span class="cm"># running again: delete same rows, insert fresh = identical</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl lg-lbl">The Idempotency Checklist — before merging any DAG</div>
+    <div class="g2">
+      <ul class="chk">
+        <li>All date/time logic uses <code>{{ ds }}</code> or <code>context['ds']</code>, never <code>datetime.now()</code></li>
+        <li>Database writes use UPSERT, MERGE, or DELETE+INSERT — never bare INSERT</li>
+        <li>File writes use date-partitioned paths (overwrite by key, not append)</li>
+        <li>Any aggregation uses the data window, not "all records" or "latest"</li>
+        <li>External API calls use the data window as the query parameter</li>
+      </ul>
+      <ul class="chk">
+        <li>Task can be manually cleared and re-run without corrupting data</li>
+        <li>Backfilling 30 days produces the same result as 30 individual runs</li>
+        <li>Running the task on an already-processed date doesn't change the output</li>
+        <li>If using S3, writing to the same key replaces — never appends to — the object</li>
+        <li>Test: run the task twice in your local compose. Compare outputs. Identical?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="senior-box">
+    <p><strong>The Poison Pill pattern:</strong> a task fails. The bug is in the source data itself — that day's extract has bad schema that your transform can't handle. Airflow retries it. It fails again. Retries again. Fails. Every retry burns a worker slot and writes noise to your alerting system. Meanwhile all downstream tasks are blocked and your SLA is breaching.</p>
+    <p style="margin-top:10px;">The fix protocol: (1) set <code>retries=0</code> on that task instance, (2) clear it to stop the retry loop, (3) fix the root cause in the source or transform logic, (4) clear the task to re-run with the fix. This is a workflow every senior runs at least monthly.</p>
+  </div>
+</div>
+
+<!-- ══════════ ANTI-PATTERNS ══════════ -->
+<div class="sec" id="antipatterns">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num red">↯</span> The Three Sins of Airflow Development <span style="font-size:.7rem;color:var(--red);font-family:'JetBrains Mono',monospace;margin-left:8px;">★ SENIOR ESSENTIAL</span></div>
+    <div class="sec-sub">These three patterns are responsible for the majority of production incidents. Know them. Enforce them in code review.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:16px;">
+    <div class="card lr">
+      <div class="lbl lr-lbl">Sin #1 — Top-Level Code</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:12px;">A junior adding <code>requests.get()</code> at the top of a DAG file will DoS your own scheduler. Every DAG file is imported every 30 seconds. HTTP calls, DB connections, and expensive imports at module level exhaust connection pools and peg CPU — for the entire scheduler, affecting every DAG in your organisation.</p>
+      <div class="g2" style="gap:10px;">
+        <div class="cb" style="font-size:.76rem;margin:0;white-space:pre-wrap;overflow-x:hidden;"><span class="cm"># ❌ Kills the scheduler</span>
+<span class="cm"># runs every 30s per parse cycle</span>
+config = requests.get(
+  "http://config-api/settings"
+).json()
+
+DB_CONN = psycopg2.connect(
+  "postgresql://prod-db/..."
+)
+
+<span class="kw">with</span> DAG(<span class="st">'my_dag'</span>, ...) <span class="kw">as</span> dag:
+    ...</div>
+        <div class="cb" style="font-size:.73rem;margin:0;"><span class="cm"># ✅ Correct: inside callable</span>
+
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">fetch_config</span>():
+    config = requests.get(
+      <span class="st">"http://config-api/settings"</span>
+    ).json()
+    <span class="kw">return</span> config
+
+<span class="kw">with</span> DAG(<span class="st">'my_dag'</span>, ...) <span class="kw">as</span> dag:
+    <span class="fn">fetch_config</span>()</div>
+      </div>
+      <div class="callout cw" style="margin-top:10px;">
+        <span class="ci">⚠</span>
+        <span><strong>The Rule:</strong> if it makes a network call, opens a file, or imports a heavy library — it lives inside a task callable. No exceptions. This is enforced in CI via the DAG integrity test suite.</span>
+      </div>
+    </div>
+
+    <div class="card lr">
+      <div class="lbl lr-lbl">Sin #2 — Variable.get() in a Loop</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:12px;">Every <code>Variable.get()</code> call is a synchronous database query. With 100 tasks each calling it once, you're hitting the metadata DB 100 times every 30-second parse cycle — 200 extra queries per minute from <em>one DAG</em>. At scale, this saturates your DB IOPS before any actual pipeline work runs.</p>
+      <div class="g2" style="gap:10px;">
+        <div class="cb" style="font-size:.76rem;margin:0;white-space:pre-wrap;overflow-x:hidden;"><span class="cm"># ❌ 100 DB hits per parse</span>
+<span class="kw">with</span> DAG(<span class="st">'pipeline'</span>, ...) <span class="kw">as</span> dag:
+  <span class="kw">for</span> table <span class="kw">in</span> TABLES:
+    PythonOperator(
+      task_id=<span class="st">f'load_{table}'</span>,
+      python_callable=<span class="kw">lambda</span>: load(
+        Variable.get(<span class="st">'env'</span>),  <span class="err"># ← DB hit</span>
+        table
+      )
+    )</div>
+        <div class="cb" style="font-size:.73rem;margin:0;"><span class="cm"># ✅ Zero DB hits at parse time</span>
+<span class="kw">with</span> DAG(<span class="st">'pipeline'</span>, ...) <span class="kw">as</span> dag:
+  <span class="kw">for</span> table <span class="kw">in</span> TABLES:
+    BashOperator(
+      task_id=<span class="st">f'load_{table}'</span>,
+      <span class="cm"># Jinja: resolved at runtime only</span>
+      bash_command=<span class="st">f'load.py '</span>
+        <span class="st">'--env {{ var.value.env }}'</span>
+        <span class="st">f' --table {table}'</span>
+    )</div>
+      </div>
+      <div class="callout cy" style="margin-top:10px;">
+        <span class="ci">💡</span>
+        <span><strong>The Rule:</strong> use Jinja <code>{{ var.value.key }}</code> in operator templates, or fetch inside task callables. Never at module level or in operator constructor arguments.</span>
+      </div>
+    </div>
+
+    <div class="card lr">
+      <div class="lbl lr-lbl">Sin #3 — Database-as-a-Queue</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:12px;">XCom values are stored as BLOBs in the metadata database. Pushing a 1GB DataFrame crashes the DB. Even pushing a 50MB object will slow every metadata query across your entire Airflow installation — task state transitions, DAG parsing, UI rendering — everything that touches the DB degrades.</p>
+      <div class="g2" style="gap:10px;">
+        <div class="cb" style="font-size:.76rem;margin:0;white-space:pre-wrap;overflow-x:hidden;"><span class="cm"># ❌ Will crash the metadata DB</span>
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">extract</span>() -> pd.DataFrame:
+    df = pd.read_parquet(<span class="st">"s3://..."</span>)
+    <span class="cm"># returning a DataFrame = pushing</span>
+    <span class="cm"># it to the DB as a BLOB</span>
+    <span class="kw">return</span> df  <span class="err"># ← potential GB in DB</span>
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">transform</span>(df: pd.DataFrame):
+    df[<span class="st">'x'</span>] = df[<span class="st">'x'</span>] * <span class="nu">2</span>  <span class="err"># ← pulled from DB</span></div>
+        <div class="cb" style="font-size:.73rem;margin:0;"><span class="cm"># ✅ Pass the path. Never the data.</span>
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">extract</span>(ds=<span class="kw">None</span>) -> str:
+    df = pd.read_parquet(<span class="st">"s3://raw/"</span>)
+    path = <span class="st">f"s3://staging/{ds}/data.parquet"</span>
+    df.to_parquet(path)
+    <span class="kw">return</span> path  <span class="cm"># ← 50 bytes in DB ✓</span>
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">transform</span>(path: str):
+    df = pd.read_parquet(path)  <span class="cm"># ← from S3</span>
+    df[<span class="st">'x'</span>] = df[<span class="st">'x'</span>] * <span class="nu">2</span></div>
+      </div>
+      <div class="callout cw" style="margin-top:10px;">
+        <span class="ci">⚠</span>
+        <span><strong>The Rule:</strong> XCom carries the <em>address</em> of the data, never the data itself. Row counts, S3 paths, status flags — fine. Anything that could exceed 1KB — write it to storage first.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 5. OPERATORS ══════════ -->
+<div class="sec" id="operators">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num green">05</span> Operators</div>
+    <div class="sec-sub">Pre-built task templates. The vocabulary of Airflow.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">PythonOperator — the most flexible</div>
+      <p style="font-size:.84rem;color:var(--t2);line-height:1.65;margin-bottom:10px;">Calls any Python callable. Return value auto-pushed to XCom. Gets the full Airflow context — logical date, task instance, run ID, everything.</p>
+      <div class="cb"><span class="kw">from</span> airflow.operators.python <span class="kw">import</span> PythonOperator
+
+<span class="kw">def</span> <span class="fn">process</span>(ds=<span class="kw">None</span>, ds_nodash=<span class="kw">None</span>, **context):
+    <span class="cm"># ds        = '2024-01-15'  (YYYY-MM-DD)</span>
+    <span class="cm"># ds_nodash = '20240115'    (for S3 paths)</span>
+    <span class="cm"># context['ti']          = task instance</span>
+    <span class="cm"># context['dag_run'].conf = runtime config</span>
+    df = pd.read_parquet(<span class="st">f"s3://landing/{ds}/"</span>)
+    df.to_parquet(<span class="st">f"s3://processed/{ds}/summary.parquet"</span>)
+    <span class="kw">return</span> len(df)  <span class="cm"># → XCom auto-push</span>
+
+op = PythonOperator(
+    task_id=<span class="st">'process'</span>, python_callable=process)</div>
+    </div>
+    <div class="card lb">
+      <div class="lbl lb-lbl">BashOperator — shell with Jinja</div>
+      <p style="font-size:.84rem;color:var(--t2);line-height:1.65;margin-bottom:10px;">Runs shell in a subprocess. Non-zero exit fails the task. Last stdout line → XCom when <code>do_xcom_push=True</code>.</p>
+      <div class="cb"><span class="kw">from</span> airflow.operators.bash <span class="kw">import</span> BashOperator
+
+run_dbt = BashOperator(
+    task_id=<span class="st">'run_dbt'</span>,
+    bash_command=<span class="st">"""
+        cd /opt/dbt
+        dbt run --select tag:daily \\
+          --vars '{"run_date": "{{ ds }}"}'
+    """</span>,
+    env={<span class="st">'DBT_PROFILES_DIR'</span>: <span class="st">'/opt/dbt'</span>},
+)
+load = BashOperator(
+    task_id=<span class="st">'load'</span>,
+    bash_command=<span class="st">'aws s3 cp /tmp/{{ ds }}.parquet s3://dw/raw/{{ ds }}/'</span>,
+)</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card lt">
+      <div class="lbl lt-lbl">SQLExecuteQueryOperator — SQL on any DB</div>
+      <div class="cb"><span class="kw">from</span> airflow.providers.common.sql.operators.sql <span class="kw">import</span> SQLExecuteQueryOperator
+
+<span class="cm"># Run a SQL file — keep DAG code clean</span>
+load_staging = SQLExecuteQueryOperator(
+    task_id=<span class="st">'load_staging'</span>,
+    conn_id=<span class="st">'postgres_dwh'</span>,
+    sql=<span class="st">'sql/load_sales.sql'</span>,
+    parameters={<span class="st">'run_date'</span>: <span class="st">'{{ ds }}'</span>},
+)
+<span class="cm"># Data quality check: empty result = failure</span>
+check = SQLExecuteQueryOperator(
+    task_id=<span class="st">'row_count_check'</span>,
+    conn_id=<span class="st">'postgres_dwh'</span>,
+    sql=<span class="st">"""
+        SELECT 1 FROM sales WHERE date='{{ ds }}'
+        HAVING COUNT(*) > 0;
+    """</span>,
+)</div>
+    </div>
+    <div class="card lp">
+      <div class="lbl lp-lbl">KubernetesPodOperator — full isolation</div>
+      <p style="font-size:.83rem;color:var(--t2);line-height:1.6;margin-bottom:8px;">One fresh container per task run. Any image, any Python version, any dependencies — isolated from Airflow itself.</p>
+      <div class="cb"><span class="kw">from</span> airflow.providers.cncf.kubernetes.operators.pod <span class="kw">import</span> KubernetesPodOperator
+<span class="kw">from</span> kubernetes.client <span class="kw">import</span> models <span class="kw">as</span> k8s
+
+train = KubernetesPodOperator(
+    task_id=<span class="st">'train_model'</span>,
+    name=<span class="st">'training-pod'</span>,
+    namespace=<span class="st">'data-engineering'</span>,
+    image=<span class="st">'myregistry/ml-trainer:2.1.0'</span>,
+    cmds=[<span class="st">'python'</span>, <span class="st">'/app/train.py'</span>],
+    arguments=[<span class="st">'--date'</span>, <span class="st">'{{ ds }}'</span>],
+    container_resources=k8s.V1ResourceRequirements(
+        requests={<span class="st">'memory'</span>: <span class="st">'8Gi'</span>, <span class="st">'cpu'</span>: <span class="st">'4'</span>},
+        limits={<span class="st">'memory'</span>: <span class="st">'16Gi'</span>},
+    ),
+    get_logs=<span class="kw">True</span>,
+    is_delete_operator_pod=<span class="kw">True</span>,
+    in_cluster=<span class="kw">True</span>,
+)</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl lg-lbl">Provider ecosystem — install only what you need</div>
+    <p style="font-size:.85rem;color:var(--t2);line-height:1.65;margin-bottom:12px;">80+ provider packages (<code>apache-airflow-providers-*</code>), versioned independently from core. Each adds operators, hooks, and sensors for a specific platform.</p>
+    <div class="gauto" style="gap:10px;">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:3px;font-family:'Inter',sans-serif;">☁️ Amazon AWS</div>
+        <div style="font-size:.74rem;color:var(--t3);margin-bottom:6px;">S3, EMR, Glue, Redshift, Athena, Lambda, ECS, SageMaker, Bedrock</div>
+        <code style="font-size:.65rem;color:var(--air);">providers-amazon</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:3px;font-family:'Inter',sans-serif;">🔵 Google Cloud</div>
+        <div style="font-size:.74rem;color:var(--t3);margin-bottom:6px;">BigQuery, GCS, Dataflow, Dataproc, Vertex AI, Pub/Sub</div>
+        <code style="font-size:.65rem;color:var(--air);">providers-google</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:3px;font-family:'Inter',sans-serif;">❄️ Snowflake</div>
+        <div style="font-size:.74rem;color:var(--t3);margin-bottom:6px;">SnowflakeOperator, async variants, SnowflakeHook</div>
+        <code style="font-size:.65rem;color:var(--air);">providers-snowflake</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:3px;font-family:'Inter',sans-serif;">⚡ Apache Spark</div>
+        <div style="font-size:.74rem;color:var(--t3);margin-bottom:6px;">SparkSubmitOperator, LivyOperator for remote clusters</div>
+        <code style="font-size:.65rem;color:var(--air);">providers-apache-spark</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:3px;font-family:'Inter',sans-serif;">🔧 dbt / Cosmos</div>
+        <div style="font-size:.74rem;color:var(--t3);margin-bottom:6px;">Each dbt model = separate Airflow task. Full lineage, individual retries.</div>
+        <code style="font-size:.65rem;color:var(--air);">astronomer-cosmos</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;">
+        <div style="font-weight:700;font-size:.84rem;margin-bottom:3px;font-family:'Inter',sans-serif;">☸️ Kubernetes</div>
+        <div style="font-size:.74rem;color:var(--t3);margin-bottom:6px;">KubernetesPodOperator — any Docker image as an isolated task</div>
+        <code style="font-size:.65rem;color:var(--air);">providers-cncf-kubernetes</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 6. TASKFLOW ══════════ -->
+<div class="sec" id="taskflow">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num purple">06</span> TaskFlow API</div>
+    <div class="sec-sub">Airflow 2.0+. Write DAGs that read like normal Python. Half the boilerplate.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card lr">
+      <div class="lbl lr-lbl">❌ Classic style — too much ceremony</div>
+      <div class="cb"><span class="kw">def</span> <span class="fn">extract</span>(**context):
+    rows = fetch(context[<span class="st">'ds'</span>])
+    context[<span class="st">'ti'</span>].xcom_push(key=<span class="st">'rows'</span>, value=rows)
+
+<span class="kw">def</span> <span class="fn">transform</span>(**context):
+    rows = context[<span class="st">'ti'</span>].xcom_pull(
+        task_ids=<span class="st">'extract'</span>, key=<span class="st">'rows'</span>)
+    context[<span class="st">'ti'</span>].xcom_push(key=<span class="st">'clean'</span>, value=clean(rows))
+
+<span class="kw">with</span> DAG(<span class="st">'pipeline'</span>, ...) <span class="kw">as</span> dag:
+    t1 = PythonOperator(task_id=<span class="st">'extract'</span>,   python_callable=extract)
+    t2 = PythonOperator(task_id=<span class="st">'transform'</span>, python_callable=transform)
+    t1 >> t2  <span class="cm"># every dependency is manual</span></div>
+    </div>
+    <div class="card lb">
+      <div class="lbl lb-lbl">✅ TaskFlow — readable, automatic XCom wiring</div>
+      <div class="cb"><span class="de">@dag</span>(schedule=<span class="st">'@daily'</span>, start_date=datetime(<span class="nu">2024</span>,<span class="nu">1</span>,<span class="nu">1</span>), catchup=<span class="kw">False</span>)
+<span class="kw">def</span> <span class="fn">pipeline</span>():
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">extract</span>(ds=<span class="kw">None</span>) -> list:
+        <span class="kw">return</span> fetch(ds)   <span class="cm"># return = auto XCom push</span>
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">transform</span>(rows: list) -> list:
+        <span class="kw">return</span> [clean(r) <span class="kw">for</span> r <span class="kw">in</span> rows]
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">load</span>(cleaned: list) -> int:
+        write_to_dw(cleaned)
+        <span class="kw">return</span> len(cleaned)
+
+    <span class="cm"># function calls = dependencies + XCom wiring in one step</span>
+    load(<span class="fn">transform</span>(<span class="fn">extract</span>()))
+
+<span class="fn">pipeline</span>()</div>
+    </div>
+  </div>
+
+  <div class="card la" style="margin-bottom:16px;">
+    <div class="lbl la-lbl">Dynamic Task Mapping — the game changer for variable-scale workloads</div>
+    <div class="g2">
+      <div>
+        <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:10px;">You have 1,000 files in S3. You don't write 1,000 tasks. You write one task and let Airflow create one instance per file at runtime using <code>.expand()</code>. Each instance gets its own state, logs, and retry count. One region fails? Only that instance retries.</p>
+        <div class="callout cy">
+          <span class="ci">⚠</span>
+          <span><strong>XCom limit applies to the expand list.</strong> The list passed to <code>.expand()</code> must fit in XCom (~1MB default). Pass paths as strings — never file contents. For 10,000+ items, write the list to S3 and pass the path.</span>
+        </div>
+        <div class="callout ct" style="margin-top:8px;">
+          <span class="ci">💡</span>
+          <span>The fan-in <code>aggregate(results)</code> task automatically receives a list of all mapped instance return values. Airflow handles the collection — you just receive the list.</span>
+        </div>
+        <div class="callout ci" style="margin-top:8px;">
+          <span class="ci">🎯</span>
+          <span><strong>The Unpredictable Volume Scenario:</strong> "We have a bucket. Sometimes 5 files arrive, sometimes 5,000." Don't write a loop that creates 5,000 operators at DAG-write time. Use <code>.expand()</code> — the task count is determined at runtime from real data, with zero code changes or redeployments. This is how you handle variable-scale workloads correctly.</span>
+        </div>
+      </div>
+      <div class="cb"><span class="de">@dag</span>(schedule=<span class="st">'@daily'</span>, start_date=datetime(<span class="nu">2024</span>,<span class="nu">1</span>,<span class="nu">1</span>), catchup=<span class="kw">False</span>)
+<span class="kw">def</span> <span class="fn">parallel_processor</span>():
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">get_files</span>(ds=<span class="kw">None</span>) -> list[str]:
+        <span class="cm"># Returns a list — one instance created per item</span>
+        <span class="kw">return</span> list_s3_files(<span class="st">f"s3://landing/{ds}/"</span>)
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">process_file</span>(s3_path: str) -> dict:
+        <span class="cm"># Runs once per path, in parallel</span>
+        df = pd.read_parquet(s3_path)
+        <span class="kw">return</span> {<span class="st">'path'</span>: s3_path, <span class="st">'rows'</span>: len(df)}
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">aggregate</span>(results: list[dict]) -> None:
+        <span class="cm"># All mapped results collected here automatically</span>
+        total = sum(r[<span class="st">'rows'</span>] <span class="kw">for</span> r <span class="kw">in</span> results)
+        log.info(<span class="st">f"Processed {total} total rows"</span>)
+
+    files   = <span class="fn">get_files</span>()
+    results = process_file.<span class="fn">expand</span>(s3_path=files)
+    <span class="fn">aggregate</span>(results)
+
+<span class="fn">parallel_processor</span>()</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 7. SCHEDULING ══════════ -->
+<div class="sec" id="scheduling">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num">07</span> Scheduling</div>
+    <div class="sec-sub">Cron, timedeltas, Dataset triggers, and backfills.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">All schedule types</div>
+      <div class="cb"><span class="cm"># Preset strings</span>
+schedule=<span class="st">'@once'</span>        <span class="cm"># run exactly once</span>
+schedule=<span class="st">'@hourly'</span>      <span class="cm"># 0 * * * *</span>
+schedule=<span class="st">'@daily'</span>       <span class="cm"># 0 0 * * * (midnight UTC)</span>
+schedule=<span class="st">'@weekly'</span>      <span class="cm"># 0 0 * * 0</span>
+schedule=<span class="kw">None</span>           <span class="cm"># manual trigger only</span>
+
+<span class="cm"># Custom cron (minute hour day month weekday)</span>
+schedule=<span class="st">'0 6 * * *'</span>    <span class="cm"># 6AM UTC daily</span>
+schedule=<span class="st">'0 6 * * 1-5'</span>  <span class="cm"># 6AM Mon-Fri only</span>
+schedule=<span class="st">'0 */4 * * *'</span>  <span class="cm"># every 4 hours</span>
+schedule=<span class="st">'*/15 * * * *'</span> <span class="cm"># every 15 minutes</span>
+
+<span class="cm"># timedelta (Airflow 2.4+)</span>
+schedule=timedelta(hours=<span class="nu">6</span>)
+
+<span class="cm"># Dataset trigger (Airflow 2.4+) — preferred over ExternalTaskSensor</span>
+<span class="kw">from</span> airflow.datasets <span class="kw">import</span> Dataset
+raw = Dataset(<span class="st">"s3://dw/raw/sales/"</span>)
+schedule=raw                 <span class="cm"># runs when this dataset is updated</span>
+schedule=[ds_a, ds_b]        <span class="cm"># runs when BOTH are updated</span></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="lbl lt-lbl">Data-Aware Scheduling — trigger on data, not time</div>
+        <p style="font-size:.84rem;color:var(--t2);line-height:1.65;margin-bottom:10px;">Upstream DAG marks a task with <code>outlets=[dataset]</code>. Downstream DAG sets <code>schedule=[dataset]</code>. Airflow fires downstream automatically when the outlet is updated — no polling, no ExternalTaskSensor, no hardcoded time offsets.</p>
+        <div class="cb" style="font-size:.71rem;"><span class="cm"># Upstream declares what it produces</span>
+<span class="de">@task</span>(outlets=[Dataset(<span class="st">"s3://dw/raw/sales/"</span>)])
+<span class="kw">def</span> <span class="fn">ingest</span>(ds=<span class="kw">None</span>): write_to_s3(ds)
+
+<span class="cm"># Downstream triggered automatically</span>
+<span class="de">@dag</span>(schedule=[Dataset(<span class="st">"s3://dw/raw/sales/"</span>)], ...)
+<span class="kw">def</span> <span class="fn">transform</span>(): ...</div>
+      </div>
+      <div class="card lg">
+        <div class="lbl lg-lbl">Backfill</div>
+        <div class="cb" style="font-size:.71rem;">airflow dags backfill \
+  --dag-id daily_sales \
+  --start-date 2024-01-01 \
+  --end-date   2024-01-31
+
+<span class="cm"># Test single task without saving state</span>
+airflow tasks test daily_sales extract_sales 2024-01-15</div>
+        <div class="callout cw" style="margin-top:8px;">
+          <span class="ci">⚠</span>
+          <span><strong>Backfills only work if tasks are idempotent</strong> — see Section 4. Running a plain-INSERT task for 30 historical days produces 30x duplicate rows.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 8. EXECUTORS ══════════ -->
+<div class="sec" id="executors">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num gold">08</span> Executors</div>
+    <div class="sec-sub">The most important infrastructure decision. Choose for scale, not familiarity.</div>
+  </div>
+
+  <div class="gauto" style="margin-bottom:16px;">
+    <div class="card card-sm la">
+      <div class="lbl la-lbl">⚡ LocalExecutor</div>
+      <p style="font-size:.84rem;color:var(--t2);line-height:1.65;margin-bottom:8px;"><strong>Parallel tasks on one machine.</strong> Subprocess per task. Requires PostgreSQL. No extra infra.</p>
+      <div class="callout cg"><span class="ci">✓</span><span>Good for: small teams, &lt;50 concurrent tasks, getting started fast.</span></div>
+    </div>
+    <div class="card card-sm lt">
+      <div class="lbl lt-lbl">🌐 CeleryExecutor</div>
+      <p style="font-size:.84rem;color:var(--t2);line-height:1.65;margin-bottom:8px;"><strong>Distributed worker fleet.</strong> Redis/RabbitMQ broker. Scale horizontally by adding workers.</p>
+      <div class="callout cg"><span class="ci">✓</span><span>The standard production choice. Most widely deployed.</span></div>
+    </div>
+    <div class="card card-sm lp">
+      <div class="lbl lp-lbl">☸️ KubernetesExecutor</div>
+      <p style="font-size:.84rem;color:var(--t2);line-height:1.65;margin-bottom:8px;"><strong>One pod per task.</strong> Full container isolation. Pay only for what runs. Deleted after completion.</p>
+      <div class="callout cg"><span class="ci">✓</span><span>Best for mixed environments, strict isolation, cloud-native.</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl la-lbl">Comparison — pick by workload characteristics</div>
+    <table class="tbl">
+      <tr><th>Executor</th><th>Parallelism</th><th>Isolation</th><th>Extra infra</th><th>Use when</th></tr>
+      <tr><td><strong>Local</strong></td><td>Multi-process, one server</td><td>OS process</td><td>Just Postgres</td><td>Single server, &lt;50 tasks, simple ops</td></tr>
+      <tr><td><strong>Celery</strong></td><td>Distributed fleet</td><td>OS process</td><td>Redis + workers</td><td>Standard prod, horizontal scale</td></tr>
+      <tr><td><strong>Kubernetes</strong></td><td>One pod/task</td><td>Full container</td><td>K8s cluster</td><td>Mixed runtimes, GPU tasks, strict isolation</td></tr>
+    </table>
+  </div>
+
+  <div class="g2">
+    <div class="card lt">
+      <div class="lbl lt-lbl">CeleryExecutor configuration</div>
+      <div class="cb">AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://...
+
+<span class="cm"># Tune to your cluster size</span>
+AIRFLOW__CORE__PARALLELISM=<span class="nu">64</span>
+AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG=<span class="nu">16</span>
+AIRFLOW__CELERY__WORKER_CONCURRENCY=<span class="nu">16</span>
+
+<span class="cm"># Scale workers</span>
+docker compose up --scale airflow-worker=<span class="nu">4</span></div>
+    </div>
+    <div class="card lp">
+      <div class="lbl lp-lbl">KubernetesExecutor — per-task resource overrides</div>
+      <div class="cb">heavy_task = PythonOperator(
+    task_id=<span class="st">'train'</span>,
+    python_callable=train,
+    executor_config={
+        <span class="st">"pod_override"</span>: k8s.V1Pod(
+            spec=k8s.V1PodSpec(containers=[
+                k8s.V1Container(
+                    name=<span class="st">"base"</span>,
+                    resources=k8s.V1ResourceRequirements(
+                        requests={<span class="st">"memory"</span>: <span class="st">"8Gi"</span>, <span class="st">"cpu"</span>: <span class="st">"4"</span>},
+                        limits={<span class="st">"memory"</span>: <span class="st">"16Gi"</span>},
+                    ),
+                )
+            ])
+        )
+    }
+)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 9. CONNECTIONS ══════════ -->
+<div class="sec" id="connections">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num teal">09</span> Connections &amp; Hooks</div>
+    <div class="sec-sub">Never hardcode credentials. Reference by conn_id. Store in secrets backend.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">Three ways to define connections</div>
+      <div class="cb"><span class="cm"># Method 1: Environment variables (best for prod)</span>
+<span class="cm"># Format: AIRFLOW_CONN_{ID_UPPERCASE}=URI</span>
+<span class="kw">export</span> AIRFLOW_CONN_POSTGRES_DWH=<span class="st">"postgresql://user:pass@host:5432/mydb"</span>
+<span class="kw">export</span> AIRFLOW_CONN_SNOWFLAKE_PROD=<span class="st">"snowflake://user:pass@account/db"</span>
+
+<span class="cm"># Method 2: CLI</span>
+airflow connections add postgres_dwh \
+  --conn-type postgres \
+  --conn-host myhost.rds.amazonaws.com \
+  --conn-login myuser --conn-password $SECRET \
+  --conn-port <span class="nu">5432</span> --conn-schema mydb
+airflow connections test postgres_dwh
+
+<span class="cm"># Method 3: Secrets Backend (recommended for prod)</span>
+AIRFLOW__SECRETS__BACKEND=<span class="st">"airflow.providers.amazon.aws.\
+secrets.secrets_manager.SecretsManagerBackend"</span>
+AIRFLOW__SECRETS__BACKEND_KWARGS=<span class="st">'{"connections_prefix":"airflow/connections"}'</span>
+<span class="cm"># Airflow resolves "airflow/connections/postgres_dwh"
+# from Secrets Manager — zero secrets in the DB</span></div>
+    </div>
+    <div class="card lb">
+      <div class="lbl lb-lbl">Using Hooks directly — fine-grained control</div>
+      <div class="cb"><span class="kw">from</span> airflow.providers.postgres.hooks.postgres <span class="kw">import</span> PostgresHook
+<span class="kw">from</span> airflow.providers.amazon.aws.hooks.s3 <span class="kw">import</span> S3Hook
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">extract_and_upload</span>(ds=<span class="kw">None</span>) -> str:
+    pg = PostgresHook(postgres_conn_id=<span class="st">'postgres_source'</span>)
+    df = pg.get_pandas_df(
+        <span class="st">f"SELECT * FROM orders WHERE date = '{ds}'"</span>)
+
+    local = <span class="st">f"/tmp/orders_{ds}.parquet"</span>
+    df.to_parquet(local)
+
+    s3 = S3Hook(aws_conn_id=<span class="st">'aws_default'</span>)
+    key = <span class="st">f"raw/orders/{ds}/data.parquet"</span>
+    s3.load_file(local, key=key,
+                 bucket_name=<span class="st">'data-lake'</span>, replace=<span class="kw">True</span>)
+    <span class="kw">return</span> <span class="st">f"s3://data-lake/{key}"</span></div>
+      <div class="callout cw" style="margin-top:8px;">
+        <span class="ci">⚠</span>
+        <span><strong>Never call <code>Variable.get()</code> at module level.</strong> 30 DAGs × 5 variables = 4,500 DB queries per minute from the scheduler. Use Jinja <code>{{ var.value.key }}</code> or fetch inside task callables.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 10. XCOMS ══════════ -->
+<div class="sec" id="xcoms">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num purple">10</span> XCom — Passing Data Between Tasks</div>
+    <div class="sec-sub">For paths and counts. Never for DataFrames. This distinction ships incidents.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">Push and pull — both styles</div>
+      <div class="cb"><span class="cm"># TaskFlow: return = push, argument = pull (preferred)</span>
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">extract</span>(ds=<span class="kw">None</span>) -> dict:
+    rows = fetch(ds)
+    path = write_s3(rows, ds)
+    <span class="kw">return</span> {<span class="st">'s3_path'</span>: path, <span class="st">'row_count'</span>: len(rows)}
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">transform</span>(result: dict) -> str:
+    df = pd.read_parquet(result[<span class="st">'s3_path'</span>])  <span class="cm"># pull path, not data</span>
+    <span class="kw">return</span> write_s3(df, <span class="st">'silver'</span>)
+
+<span class="cm"># Classic: explicit push/pull</span>
+<span class="kw">def</span> <span class="fn">extract_classic</span>(**context):
+    context[<span class="st">'ti'</span>].xcom_push(key=<span class="st">'path'</span>, value=write_s3(...))
+
+<span class="kw">def</span> <span class="fn">transform_classic</span>(**context):
+    path = context[<span class="st">'ti'</span>].xcom_pull(
+        task_ids=<span class="st">'extract_classic'</span>, key=<span class="st">'path'</span>)</div>
+    </div>
+    <div class="card">
+      <div class="lbl lr-lbl">What to push — and what never to push</div>
+      <table class="tbl" style="margin-bottom:10px;">
+        <tr><th>Data</th><th>Size</th><th>Safe?</th></tr>
+        <tr><td>Row count, status flag</td><td>Bytes</td><td><span style="color:var(--green);">✓ Always fine</span></td></tr>
+        <tr><td>S3/GCS file path</td><td>~100 bytes</td><td><span style="color:var(--green);">✓ Always fine</span></td></tr>
+        <tr><td>Small config dict</td><td>&lt;10KB</td><td><span style="color:var(--green);">✓ Fine</span></td></tr>
+        <tr><td>List of 100 strings</td><td>&lt;50KB</td><td><span style="color:var(--gold);">⚠ Usually fine</span></td></tr>
+        <tr><td>JSON blob &gt;500KB</td><td>&gt;500KB</td><td><span style="color:var(--red);">✗ Risky</span></td></tr>
+        <tr><td>pandas DataFrame</td><td>MBs–GBs</td><td><span style="color:var(--red);">✗ Never</span></td></tr>
+        <tr><td>Model weights / pkl</td><td>100MB+</td><td><span style="color:var(--red);">✗ Never</span></td></tr>
+      </table>
+      <div class="inset">
+        <strong>The correct pattern for any large data:</strong> Task A writes to S3 → pushes the path (string) to XCom → Task B pulls the path → reads from S3. Scales to any data size. XCom stays tiny.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 11. BRANCHING ══════════ -->
+<div class="sec" id="branching">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num green">11</span> Branching &amp; Flow Control</div>
+    <div class="sec-sub">If/else in pipelines. Trigger rules. The branch-join trap.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card lp">
+      <div class="lbl lp-lbl">@task.branch — conditional routing</div>
+      <div class="cb"><span class="de">@dag</span>(schedule=<span class="st">'@daily'</span>, start_date=datetime(<span class="nu">2024</span>,<span class="nu">1</span>,<span class="nu">1</span>), catchup=<span class="kw">False</span>)
+<span class="kw">def</span> <span class="fn">conditional_pipeline</span>():
+
+    <span class="de">@task.branch</span>
+    <span class="kw">def</span> <span class="fn">route</span>(ds=<span class="kw">None</span>) -> str:
+        day = datetime.strptime(ds, <span class="st">'%Y-%m-%d'</span>).weekday()
+        <span class="kw">return</span> <span class="st">'full_run'</span> <span class="kw">if</span> day == <span class="nu">0</span> <span class="kw">else</span> <span class="st">'incremental_run'</span>
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">full_run</span>(): run_full_model()
+
+    <span class="de">@task</span>
+    <span class="kw">def</span> <span class="fn">incremental_run</span>(): run_incr_model()
+
+    <span class="cm"># CRITICAL: use this trigger rule to rejoin branches</span>
+    <span class="cm"># Without it, 'finish' is skipped because one upstream is skipped</span>
+    <span class="de">@task</span>(trigger_rule=<span class="st">'none_failed_min_one_success'</span>)
+    <span class="kw">def</span> <span class="fn">finish</span>(): slack_notify(<span class="st">"Training complete"</span>)
+
+    r = <span class="fn">route</span>()
+    a, b = <span class="fn">full_run</span>(), <span class="fn">incremental_run</span>()
+    r >> [a, b]
+    [a, b] >> <span class="fn">finish</span>()  <span class="cm"># trigger_rule on finish ↑</span>
+
+<span class="fn">conditional_pipeline</span>()</div>
+    </div>
+    <div>
+      <div class="card la" style="margin-bottom:14px;">
+        <div class="lbl la-lbl">ShortCircuitOperator — abort early</div>
+        <div class="cb" style="font-size:.72rem;"><span class="kw">from</span> airflow.operators.python <span class="kw">import</span> ShortCircuitOperator
+
+<span class="kw">def</span> <span class="fn">has_data</span>(ds=<span class="kw">None</span>) -> bool:
+    count = query_count(ds)
+    <span class="kw">if</span> count == <span class="nu">0</span>:
+        log.warning(<span class="st">f"No data for {ds} — skipping"</span>)
+        <span class="kw">return</span> <span class="kw">False</span>  <span class="cm"># all downstream: skipped</span>
+    <span class="kw">return</span> <span class="kw">True</span>
+
+check = ShortCircuitOperator(
+    task_id=<span class="st">'check_data'</span>,
+    python_callable=has_data,
+)
+check >> transform >> load</div>
+      </div>
+      <div class="card lg">
+        <div class="lbl lg-lbl">Trigger rules reference</div>
+        <table class="tbl">
+          <tr><th>Rule</th><th>Runs when</th></tr>
+          <tr><td><code>all_success</code> (default)</td><td>All upstreams succeeded</td></tr>
+          <tr><td><code>all_done</code></td><td>All done — any state</td></tr>
+          <tr><td><code>none_failed</code></td><td>No failures (skipped OK)</td></tr>
+          <tr><td><code style="color:var(--teal);">none_failed_min_one_success</code></td><td><strong>Use this for branch joins</strong></td></tr>
+          <tr><td><code>always</code></td><td>No matter what — even if all failed</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 12. SENSORS ══════════ -->
+<div class="sec" id="sensors">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num teal">12</span> Sensors</div>
+    <div class="sec-sub">Always reschedule mode. Always set timeout. No exceptions.</div>
+  </div>
+
+  <div class="concept lr">
+    <div class="concept-title">👁 The one rule that matters</div>
+    <p><strong><code>mode='poke'</code> (default) holds a worker slot the entire wait time.</strong> 20 sensors waiting 4 hours = 20 worker slots consumed for zero work. Real tasks queue up. The system looks "busy" while doing nothing. <strong>Always use <code>mode='reschedule'</code></strong> — it checks, releases the slot, gets re-queued after the interval. Zero slot waste.</p>
+  </div>
+
+  <div class="g3" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">S3KeySensor</div>
+      <div class="cb" style="font-size:.72rem;"><span class="kw">from</span> airflow.providers.amazon.aws.sensors.s3 <span class="kw">import</span> S3KeySensor
+
+wait = S3KeySensor(
+    task_id=<span class="st">'wait_for_file'</span>,
+    bucket_name=<span class="st">'landing'</span>,
+    bucket_key=<span class="st">'data/{{ ds }}/sales.parquet'</span>,
+    aws_conn_id=<span class="st">'aws_default'</span>,
+    poke_interval=<span class="nu">60</span>,
+    timeout=<span class="nu">14400</span>,  <span class="cm"># 4h max</span>
+    mode=<span class="st">'reschedule'</span>,  <span class="cm"># ← always</span>
+)</div>
+    </div>
+    <div class="card lb">
+      <div class="lbl lb-lbl">ExternalTaskSensor</div>
+      <div class="cb" style="font-size:.72rem;"><span class="kw">from</span> airflow.sensors.external_task <span class="kw">import</span> ExternalTaskSensor
+
+wait_upstream = ExternalTaskSensor(
+    task_id=<span class="st">'wait_ingestion'</span>,
+    external_dag_id=<span class="st">'raw_ingestion'</span>,
+    external_task_id=<span class="st">'load_complete'</span>,
+    allowed_states=[<span class="st">'success'</span>],
+    execution_delta=timedelta(hours=<span class="nu">0</span>),
+    poke_interval=<span class="nu">120</span>,
+    timeout=<span class="nu">21600</span>,  <span class="cm"># 6h max</span>
+    mode=<span class="st">'reschedule'</span>,
+)</div>
+      <div class="callout cy" style="margin-top:8px;font-size:.78rem;">
+        <span class="ci">💡</span>
+        <span>Prefer <strong>Datasets</strong> (2.4+) over ExternalTaskSensor. No polling, no timeout, no execution_delta math.</span>
+      </div>
+    </div>
+    <div class="card lt">
+      <div class="lbl lt-lbl">Custom sensor</div>
+      <div class="cb" style="font-size:.72rem;"><span class="kw">from</span> airflow.sensors.base <span class="kw">import</span> BaseSensorOperator
+
+<span class="kw">class</span> <span class="fn">MinRowCountSensor</span>(BaseSensorOperator):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, table, ds, min_rows=<span class="nu">1</span>, **kw):
+        super().__init__(**kw)
+        self.table = table
+        self.ds = ds
+        self.min_rows = min_rows
+
+    <span class="kw">def</span> <span class="fn">poke</span>(self, context) -> bool:
+        hook = PostgresHook(<span class="st">'postgres_dwh'</span>)
+        count = hook.get_first(
+            <span class="st">f"SELECT COUNT(*) FROM {self.table}"</span>
+            <span class="st">f" WHERE date='{self.ds}'"</span>
+        )[<span class="nu">0</span>]
+        <span class="kw">return</span> count >= self.min_rows</div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="card lo" style="margin-bottom:16px;">
+    <div class="lbl lo-lbl">Day-to-Day Workflow — the three-environment contract</div>
+    <div class="g3">
+      <div>
+        <p style="font-size:.76rem;font-weight:700;color:var(--air);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">LOCAL</p>
+        <ul class="chk" style="gap:7px;">
+          <li>Run <code>pytest tests/test_dag_integrity.py</code> before every commit — catches import errors and policy violations instantly</li>
+          <li>Use <code>airflow dags test my_dag 2024-01-15</code> to execute a full DAG run locally without needing the scheduler or metadata DB</li>
+          <li>Verify idempotency: run the same task twice for the same date, compare output. If different — you have a bug.</li>
+          <li>Test sensor logic with <code>airflow tasks test</code> — confirm poke returns True for valid data and False otherwise</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:.76rem;font-weight:700;color:var(--purple);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">CI (pull request gate)</p>
+        <ul class="chk" style="gap:7px;">
+          <li>DAG integrity suite passes: no import errors, no cycles, catchup=False, dagrun_timeout set</li>
+          <li>No <code>datetime.now()</code> in any DAG file — caught by static analysis or the start_date freshness test</li>
+          <li>No <code>Variable.get()</code> at module level — enforced via AST lint rule</li>
+          <li>Reviewer explicitly checks: are all tasks idempotent? Is any XCom push potentially large?</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:.76rem;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">PRODUCTION</p>
+        <ul class="chk" style="gap:7px;">
+          <li><strong>Never backfill more than 5 runs via the UI.</strong> It locks the UI for everyone and creates a thundering herd on workers. Use the CLI for anything larger.</li>
+          <li>CLI backfill with <code>--max-active-runs 4</code> — controlled parallelism, doesn't saturate workers</li>
+          <li>Monitor <code>airflow dags list-import-errors</code> as a health check in your deployment pipeline</li>
+          <li>If a SQLite connection string or SequentialExecutor appears in any PR targeting production — reject immediately. No exceptions.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!-- ══════════ 13. ZOMBIES ══════════ -->
+<div class="sec" id="zombies">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num orange">13</span> Zombies &amp; Poison Pills <span style="font-size:.7rem;color:var(--orange);font-family:'JetBrains Mono',monospace;margin-left:8px;">★ SENIOR ESSENTIAL</span></div>
+    <div class="sec-sub">Every experienced Airflow engineer has fought both. Know them before your first 3am page.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card lo">
+      <div class="lbl lo-lbl">🧟 Zombie Tasks</div>
+      <div class="concept-title" style="font-size:.95rem;margin-bottom:12px;">The task the DB thinks is running. The worker process is dead.</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:12px;">A Zombie is a task instance stuck in <span class="dag-node ds-running" style="font-size:.68rem;padding:3px 9px;">running</span> state while the process that was actually executing it is gone. The DB was never updated because the worker was killed externally — OOM, pod eviction, spot instance termination, node failure — before it could write a terminal state.</p>
+
+      <div class="inset" style="margin-bottom:12px;">
+        <strong style="font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--orange);display:block;margin-bottom:8px;">How to spot zombies in logs:</strong>
+        <div class="cb" style="margin:0;font-size:.7rem;"><span class="cm"># In scheduler logs — the dead giveaway:</span>
+Detected zombie job: ... TaskInstance: my_dag.my_task [running]
+
+<span class="cm"># Or in worker logs:</span>
+Executor reports task instance my_dag.my_task 
+  finished with state 'failed' but the task 
+  is not in a terminal state
+
+<span class="cm"># CLI: find all zombies now</span>
+airflow tasks list-running --dag-id my_dag | \
+  grep -E "running.*[0-9]{2}min"  <span class="cm"># stuck long</span></div>
+      </div>
+
+      <div class="lbl lo-lbl" style="margin-bottom:8px;">Resolution protocol</div>
+      <div class="cb" style="font-size:.72rem;"><span class="cm"># Option 1: Let the zombie detector handle it
+# airflow.cfg: [scheduler] zombie_detection_interval = 10.0
+# Default: checks every 10s, marks stuck tasks as 'failed'
+# after zombie_task_threshold_secs (default 300s)</span>
+
+<span class="cm"># Option 2: Manual clear if you need it resolved now</span>
+airflow tasks clear my_dag \
+  --task-id my_task \
+  --start-date 2024-01-15 \
+  --end-date 2024-01-15
+
+<span class="cm"># Option 3: Mark failed directly via CLI</span>
+airflow tasks set-state my_dag my_task failed \
+  --run-id scheduled__2024-01-15T06:00:00
+
+<span class="cm"># Then investigate root cause:
+# - Check worker system memory (dmesg, CloudWatch, Datadog)
+# - Check K8s events: kubectl get events -n airflow
+# - Check spot/preemptible instance termination logs</span></div>
+
+      <div class="callout cy" style="margin-top:10px;">
+        <span class="ci">⚠</span>
+        <span><strong>Zombies from OOM are silent.</strong> The task disappears with no Python exception, no stack trace, no Airflow log output. If a task vanishes with no error in the Airflow UI, your first move is to check worker <em>system</em> memory metrics — not Airflow logs. The OOM killer leaves no Python trace.</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="card lr" style="margin-bottom:14px;">
+        <div class="lbl lr-lbl">☠️ Poison Pill Tasks</div>
+        <div class="concept-title" style="font-size:.95rem;margin-bottom:12px;">The task that will always fail for this data. Burning slots on every retry.</div>
+        <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:10px;">A Poison Pill is a task where the failure is in the <em>data</em>, not the code. The source file has bad schema. The API returned garbage. The expected partition doesn't exist. Airflow will faithfully retry it <code>retries</code> times — each retry burns a worker slot, writes noise to your alert channel, and delays everything downstream.</p>
+
+        <div class="cb" style="font-size:.72rem;"><span class="cm"># Recognition: rapid fail-retry-fail-retry pattern
+# in the UI with no change between runs</span>
+
+<span class="cm"># ── Emergency stop protocol ────────────────</span>
+
+<span class="cm"># Step 1: Stop the retry loop immediately</span>
+<span class="cm"># In UI: task → Edit → retries = 0</span>
+<span class="cm"># Or via CLI:</span>
+airflow tasks set-state my_dag poison_task failed \
+  --run-id scheduled__2024-01-15T06:00:00
+
+<span class="cm"># Step 2: Diagnose the root cause
+# - Check source data integrity
+# - Check upstream system health
+# - Check if schema changed</span>
+
+<span class="cm"># Step 3: Fix root cause in code or source data</span>
+
+<span class="cm"># Step 4: Clear and re-run with fix</span>
+airflow tasks clear my_dag \
+  --task-id poison_task \
+  --start-date 2024-01-15 --end-date 2024-01-15</div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px;">
+        <div class="lbl la-lbl">Zombie vs Poison Pill — quick distinction</div>
+        <table class="tbl">
+          <tr><th></th><th>Zombie</th><th>Poison Pill</th></tr>
+          <tr><td><strong>DB state</strong></td><td><span class="dag-node ds-running" style="font-size:.67rem;padding:2px 8px;">running</span></td><td><span class="dag-node ds-failed" style="font-size:.67rem;padding:2px 8px;">failed</span> repeatedly</td></tr>
+          <tr><td><strong>Worker process</strong></td><td>Dead (killed externally)</td><td>Runs, fails cleanly</td></tr>
+          <tr><td><strong>Log output</strong></td><td>Truncated or absent</td><td>Full Python traceback</td></tr>
+          <tr><td><strong>Root cause</strong></td><td>OOM, eviction, node failure</td><td>Bad data, changed schema, API error</td></tr>
+          <tr><td><strong>Fix</strong></td><td>Increase memory, handle preemption</td><td>Fix data source or transform logic</td></tr>
+        </table>
+      </div>
+
+      <div class="senior-box">
+        <p><strong>Prevention over cure:</strong> Set <code>dagrun_timeout</code> on every DAG. This is your backstop — a zombie or poison pill can't hold the pipeline hostage past the timeout. When it trips: the run fails, you get an alert, you investigate. Without it, a zombie in "running" state can block your DAG for days.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ OBSERVABILITY ══════════ -->
+<div class="sec" id="observability">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num purple">◉</span> The Observability Trinity <span style="font-size:.7rem;color:var(--purple);font-family:'JetBrains Mono',monospace;margin-left:8px;">★ SENIOR ESSENTIAL</span></div>
+    <div class="sec-sub">Seniors don't just care if a task finished. They care how it finished — and what it cost.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl lp-lbl">Metrics that matter — and what each one tells you about system health</div>
+    <table class="tbl">
+      <tr><th>Metric</th><th>How to measure</th><th>Healthy</th><th>When breached: root cause</th></tr>
+      <tr>
+        <td><strong>DAG Import Latency</strong></td>
+        <td><code>airflow_dag_processing_import_errors</code> + scheduler logs</td>
+        <td>&lt; 2 seconds total for all DAGs</td>
+        <td>Module-level I/O, heavy imports, or too many DAG files. Split DAGs into subdirs or purge dead DAGs.</td>
+      </tr>
+      <tr>
+        <td><strong>Task Lag</strong><br><span style="font-size:.75rem;color:var(--t3);">scheduled → queued</span></td>
+        <td>Gantt view in UI. Metric: <code>airflow_scheduler_tasks_starving</code></td>
+        <td>&lt; 30 seconds</td>
+        <td><strong>Your Executor is the bottleneck.</strong> Workers at capacity, broker unreachable, or <code>parallelism</code> config too low. Not a code problem — an infrastructure problem.</td>
+      </tr>
+      <tr>
+        <td><strong>Pool Starvation</strong><br><span style="font-size:.75rem;color:var(--t3);">queued but not running</span></td>
+        <td>Admin → Pools in UI. Metric: <code>pool_open_slots</code></td>
+        <td>Pool slots &gt; 0</td>
+        <td>Tasks stuck in "scheduled" despite free workers = custom Pool exhausted. Increase pool size or reduce concurrency on the offending task group.</td>
+      </tr>
+      <tr>
+        <td><strong>Scheduler Heartbeat Age</strong></td>
+        <td><code>airflow_scheduler_heartbeat</code> (Prometheus/StatsD)</td>
+        <td>&lt; 10 seconds since last beat</td>
+        <td>Scheduler process dead or deadlocked. No new task instances will be created. Page immediately.</td>
+      </tr>
+      <tr>
+        <td><strong>Zombie Task Count</strong></td>
+        <td><code>airflow_zombies_killed</code> metric</td>
+        <td>0 — any zombie is a signal</td>
+        <td>Workers being OOM-killed or evicted. Check system memory, not Airflow logs. See Section 14.</td>
+      </tr>
+      <tr>
+        <td><strong>Metadata DB IOPS</strong></td>
+        <td>CloudWatch / Datadog / pg_stat_activity</td>
+        <td>Under 70% of provisioned IOPS</td>
+        <td>Variable.get() loops, XCom bloat, or too many concurrent scheduler parse cycles. Add a read replica before you hit the ceiling.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">Enabling metrics — StatsD + Prometheus</div>
+      <div class="cb"><span class="cm"># airflow.cfg / environment variables</span>
+AIRFLOW__METRICS__STATSD_ON=<span class="st">True</span>
+AIRFLOW__METRICS__STATSD_HOST=statsd-exporter
+AIRFLOW__METRICS__STATSD_PORT=<span class="nu">9125</span>
+AIRFLOW__METRICS__STATSD_PREFIX=airflow
+
+<span class="cm"># Key metrics to alert on (Prometheus naming)</span>
+<span class="cm"># airflow_scheduler_heartbeat          — scheduler alive</span>
+<span class="cm"># airflow_dag_processing_import_errors — broken DAG files</span>
+<span class="cm"># airflow_pool_open_slots              — pool starvation</span>
+<span class="cm"># airflow_zombies_killed               — OOM workers</span>
+<span class="cm"># airflow_task_duration                — task runtime trends</span>
+<span class="cm"># airflow_scheduler_tasks_starving     — executor bottleneck</span></div>
+    </div>
+    <div class="card lt">
+      <div class="lbl lt-lbl">The "Task Lag" diagnosis path</div>
+      <p style="font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:10px;">Open the Gantt chart for a recent DAG run. The colored bars tell the whole story:</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:var(--r2);padding:10px 14px;font-size:.84rem;color:var(--t2);">
+          <strong style="color:var(--gold);">Long yellow bar (queued)</strong> — workers are full or broker is slow. Add workers or increase <code>parallelism</code>.
+        </div>
+        <div style="background:rgba(1,124,238,0.07);border:1px solid var(--airborder);border-radius:var(--r2);padding:10px 14px;font-size:.84rem;color:var(--t2);">
+          <strong style="color:var(--air);">Long blue bar (running)</strong> — the task itself is slow. Profile the code, check for N+1 queries, consider streaming instead of full loads.
+        </div>
+        <div style="background:rgba(160,32,32,0.07);border:1px solid var(--redborder);border-radius:var(--r2);padding:10px 14px;font-size:.84rem;color:var(--t2);">
+          <strong style="color:var(--red);">Instant red (failed)</strong> — import error or immediate exception. Check logs — if there are none, it's an OOM kill. Check worker system metrics.
+        </div>
+        <div style="background:rgba(122,138,160,0.08);border:1px solid rgba(122,138,160,0.2);border-radius:var(--r2);padding:10px 14px;font-size:.84rem;color:var(--t2);">
+          <strong style="color:var(--t3);">Long grey gap before queued</strong> — scheduler parse latency. Your DAG files are too heavy. Check for module-level I/O.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 14. CI/CD ══════════ -->
+<div class="sec" id="cicd">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num red">14</span> CI/CD &amp; DAG Testing <span style="font-size:.7rem;color:var(--red);font-family:'JetBrains Mono',monospace;margin-left:8px;">★ SENIOR ESSENTIAL</span></div>
+    <div class="sec-sub">If <code>airflow dags list-import-errors</code> shows anything in production, the engineer who pushed it is buying coffee.</div>
+  </div>
+
+  <div class="concept la">
+    <div class="concept-title">🧪 DAG integrity tests — the minimum viable CI pipeline</div>
+    <p>We don't drop files in a folder and hope. Every DAG goes through CI before touching the scheduler. The core test suite catches 80% of production incidents: import errors, circular dependencies, catchup=True accidents, missing timeouts, sensors in poke mode. These run in under 60 seconds and block the merge if anything fails.</p>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">Core DAG integrity test suite — paste this into your CI</div>
+      <div class="cb"><span class="cm"># tests/test_dag_integrity.py</span>
+<span class="kw">import</span> pytest
+<span class="kw">from</span> airflow.models <span class="kw">import</span> DagBag
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime, timedelta
+
+<span class="de">@pytest.fixture</span>(scope=<span class="st">'session'</span>)
+<span class="kw">def</span> <span class="fn">dagbag</span>():
+    <span class="kw">return</span> DagBag(include_examples=<span class="kw">False</span>)
+
+<span class="kw">def</span> <span class="fn">test_no_import_errors</span>(dagbag):
+    <span class="st">"""Any DAG with an import error would brick the scheduler."""</span>
+    assert dagbag.import_errors == {}, \
+        <span class="st">f"Import errors: {dagbag.import_errors}"</span>
+
+<span class="kw">def</span> <span class="fn">test_dag_count</span>(dagbag):
+    assert len(dagbag.dags) > <span class="nu">0</span>, <span class="st">"No DAGs found in the bag"</span>
+
+<span class="kw">def</span> <span class="fn">test_all_dags_have_catchup_false</span>(dagbag):
+    <span class="st">"""Prevent the "500 backfill runs" incident."""</span>
+    offenders = [
+        dag_id <span class="kw">for</span> dag_id, dag <span class="kw">in</span> dagbag.dags.items()
+        <span class="kw">if</span> dag.catchup <span class="kw">is not</span> <span class="kw">False</span>
+    ]
+    assert offenders == [], \
+        <span class="st">f"DAGs with catchup=True: {offenders}"</span>
+
+<span class="kw">def</span> <span class="fn">test_all_dags_have_timeout</span>(dagbag):
+    <span class="st">"""A DAG without timeout can hold the scheduler hostage."""</span>
+    offenders = [
+        dag_id <span class="kw">for</span> dag_id, dag <span class="kw">in</span> dagbag.dags.items()
+        <span class="kw">if</span> dag.dagrun_timeout <span class="kw">is</span> <span class="kw">None</span>
+    ]
+    assert offenders == [], \
+        <span class="st">f"DAGs missing dagrun_timeout: {offenders}"</span>
+
+<span class="kw">def</span> <span class="fn">test_all_dags_have_static_start_date</span>(dagbag):
+    <span class="st">"""start_date=datetime.now() causes a new run every scheduler cycle."""</span>
+    now = datetime.utcnow()
+    <span class="kw">for</span> dag_id, dag <span class="kw">in</span> dagbag.dags.items():
+        delta = (now - dag.start_date.replace(tzinfo=<span class="kw">None</span>)).total_seconds()
+        assert delta > <span class="nu">60</span>, \
+            <span class="st">f"{dag_id} has a dynamic start_date (set within the last 60s)"</span>
+
+<span class="kw">def</span> <span class="fn">test_all_dags_have_owner</span>(dagbag):
+    offenders = [
+        dag_id <span class="kw">for</span> dag_id, dag <span class="kw">in</span> dagbag.dags.items()
+        <span class="kw">if</span> dag.owner <span class="kw">in</span> (<span class="kw">None</span>, <span class="st">''</span>, <span class="st">'airflow'</span>)
+    ]
+    assert offenders == [], \
+        <span class="st">f"DAGs with default/missing owner: {offenders}"</span>
+
+<span class="kw">def</span> <span class="fn">test_no_cycles</span>(dagbag):
+    <span class="st">"""Circular dependency crashes the scheduler."""</span>
+    <span class="kw">for</span> dag_id, dag <span class="kw">in</span> dagbag.dags.items():
+        dag.test_cycle()  <span class="cm"># raises if cycle detected</span></div>
+    </div>
+    <div>
+      <div class="card lb" style="margin-bottom:14px;">
+        <div class="lbl lb-lbl">GitHub Actions CI workflow</div>
+        <div class="cb" style="font-size:.7rem;"><span class="cm"># .github/workflows/dag-tests.yml</span>
+<span class="kw">name</span>: DAG Integrity Tests
+<span class="kw">on</span>: [push, pull_request]
+
+<span class="kw">jobs</span>:
+  <span class="kw">test</span>:
+    <span class="kw">runs-on</span>: ubuntu-latest
+    <span class="kw">steps</span>:
+      - <span class="kw">uses</span>: actions/checkout@v4
+
+      - <span class="kw">name</span>: Set up Python
+        <span class="kw">uses</span>: actions/setup-python@v5
+        <span class="kw">with</span>: {python-version: '3.11'}
+
+      - <span class="kw">name</span>: Install Airflow
+        <span class="kw">run</span>: |
+          pip install apache-airflow==2.9.0 \
+            --constraint https://raw.githubusercontent.com/\
+apache/airflow/constraints-2.9.0/constraints-3.11.txt
+          pip install pytest
+
+      - <span class="kw">name</span>: Run DAG integrity tests
+        <span class="kw">run</span>: pytest tests/test_dag_integrity.py -v
+        <span class="kw">env</span>:
+          AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+          AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "sqlite:////tmp/airflow.db"</div>
+      </div>
+
+      <div class="card lp" style="margin-bottom:14px;">
+        <div class="lbl lp-lbl">Advanced: per-DAG unit tests</div>
+        <div class="cb" style="font-size:.7rem;"><span class="cm"># tests/test_sales_pipeline.py</span>
+<span class="kw">from</span> unittest.mock <span class="kw">import</span> patch, MagicMock
+<span class="kw">from</span> dags.daily_sales_pipeline <span class="kw">import</span> daily_sales_pipeline
+
+<span class="kw">def</span> <span class="fn">test_dag_loaded</span>():
+    dag = daily_sales_pipeline()
+    assert dag.dag_id == <span class="st">'daily_sales_pipeline'</span>
+    assert dag.catchup == <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="fn">test_task_count</span>():
+    dag = daily_sales_pipeline()
+    assert len(dag.tasks) == <span class="nu">3</span>
+
+<span class="de">@patch</span>(<span class="st">'dags.daily_sales_pipeline.query_postgres'</span>)
+<span class="de">@patch</span>(<span class="st">'dags.daily_sales_pipeline.write_to_s3'</span>)
+<span class="kw">def</span> <span class="fn">test_extract_returns_count</span>(mock_s3, mock_pg):
+    mock_pg.return_value = [{<span class="st">'id'</span>:<span class="nu">1</span>}, {<span class="st">'id'</span>:<span class="nu">2</span>}]
+    mock_s3.return_value = <span class="st">'s3://test/path'</span>
+    <span class="kw">from</span> dags.daily_sales_pipeline <span class="kw">import</span> extract_sales
+    result = extract_sales.function(ds=<span class="st">'2024-01-15'</span>)
+    assert result[<span class="st">'row_count'</span>] == <span class="nu">2</span></div>
+      </div>
+
+      <div class="senior-box">
+        <p><strong>The deployment gate that prevents most incidents:</strong> block any PR that introduces: (1) import errors, (2) catchup=True without an explicit override comment, (3) missing dagrun_timeout, (4) datetime.now() as start_date. These four checks alone prevent the majority of production Airflow incidents teams experience in their first year.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 15. PRODUCTION ══════════ -->
+<div class="sec" id="production">
+  <div class="sec-header">
+    <div class="sec-h"><span class="num red">15</span> Production &amp; Quick Reference</div>
+    <div class="sec-sub">CLI, monitoring, alerting, checklists. Everything to run Airflow reliably at scale.</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card la">
+      <div class="lbl la-lbl">Essential CLI commands</div>
+      <div class="cb"><span class="cm"># ── DAGs ────────────────────────────────────</span>
+airflow dags list
+airflow dags list-import-errors    <span class="cm"># first thing to check in prod</span>
+airflow dags trigger daily_sales \
+  --conf '{"override": "value"}'
+airflow dags pause   daily_sales
+airflow dags unpause daily_sales
+airflow dags test daily_sales 2024-01-15  <span class="cm"># dry run, no state</span>
+
+<span class="cm"># ── Tasks ────────────────────────────────────</span>
+airflow tasks list    daily_sales
+airflow tasks test    daily_sales extract_sales 2024-01-15
+airflow tasks clear   daily_sales --start-date 2024-01-01
+airflow tasks set-state daily_sales my_task failed \
+  --run-id scheduled__2024-01-15T06:00:00
+
+<span class="cm"># ── Backfill ─────────────────────────────────</span>
+airflow dags backfill \
+  --dag-id daily_sales \
+  --start-date 2024-01-01 --end-date 2024-01-31 \
+  --max-active-runs 4
+
+<span class="cm"># ── Connections & Variables ───────────────────</span>
+airflow connections list
+airflow connections test postgres_dwh
+airflow variables set environment production
+
+<span class="cm"># ── System health ────────────────────────────</span>
+airflow info
+airflow db check                   <span class="cm"># DB connectivity</span>
+airflow db migrate                 <span class="cm"># run pending migrations</span>
+airflow scheduler --log-level INFO
+airflow celery worker              <span class="cm"># start a Celery worker</span></div>
+    </div>
+    <div class="card">
+      <div class="lbl lg-lbl">What to monitor — and what each metric tells you</div>
+      <table class="tbl" style="margin-bottom:14px;">
+        <tr><th>Metric</th><th>Alert when</th><th>Means</th></tr>
+        <tr><td><strong>Scheduler heartbeat age</strong></td><td>&gt;30s since last heartbeat</td><td>Scheduler dead or hung</td></tr>
+        <tr><td><strong>Task queue depth</strong></td><td>Growing trend &gt;10min</td><td>Workers overwhelmed or down</td></tr>
+        <tr><td><strong>DAG parse time</strong></td><td>&gt;10s total</td><td>Module-level I/O in DAG files</td></tr>
+        <tr><td><strong>Failed task instances</strong></td><td>Any in critical DAGs</td><td>Code bug or data quality issue</td></tr>
+        <tr><td><strong>Zombie task count</strong></td><td>Any &gt; 0</td><td>Workers being OOM killed or evicted</td></tr>
+        <tr><td><strong>SLA misses</strong></td><td>Any — data late</td><td>Slowdowns, upstream delays</td></tr>
+        <tr><td><strong>Metadata DB IOPS</strong></td><td>Approaching DB limit</td><td>Time to add a read replica</td></tr>
+        <tr><td><strong>Worker memory usage</strong></td><td>&gt;85% consistently</td><td>OOM incidents inbound</td></tr>
+      </table>
+
+      <div class="lbl lo-lbl" style="margin-bottom:8px;">SLA + failure callbacks</div>
+      <div class="cb" style="font-size:.7rem;"><span class="kw">from</span> airflow.providers.slack.hooks.slack_webhook <span class="kw">import</span> SlackWebhookHook
+
+<span class="kw">def</span> <span class="fn">on_failure</span>(context):
+    dag_id  = context[<span class="st">'dag'</span>].dag_id
+    task_id = context[<span class="st">'task_instance'</span>].task_id
+    log_url = context[<span class="st">'task_instance'</span>].log_url
+    SlackWebhookHook(<span class="st">'slack_alerts'</span>).send(text=(
+        <span class="st">f"🚨 *FAILURE* {dag_id} / {task_id}\n{log_url}"</span>))
+
+<span class="kw">def</span> <span class="fn">on_sla_miss</span>(dag, task_list, blocking_task_list, slas, blocking_tis):
+    SlackWebhookHook(<span class="st">'slack_alerts'</span>).send(text=(
+        <span class="st">f"⚠️ SLA MISS on {dag.dag_id}: {task_list}"</span>))
+
+default_args = {<span class="st">'on_failure_callback'</span>: on_failure}
+
+<span class="kw">with</span> DAG(<span class="st">'critical'</span>, sla_miss_callback=on_sla_miss, ...) <span class="kw">as</span> dag:
+    extract = PythonOperator(
+        task_id=<span class="st">'extract'</span>, python_callable=extract_fn,
+        sla=timedelta(minutes=<span class="nu">30</span>))</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="lbl lb-lbl">Production checklist — gate every DAG deployment on this</div>
+    <div class="g2">
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">DAG Code</p>
+        <ul class="chk" style="gap:7px;">
+          <li>Static <code>start_date</code> — never <code>datetime.now()</code></li>
+          <li><code>catchup=False</code> explicit — no accidents</li>
+          <li><code>max_active_runs=1</code> for sequential pipelines</li>
+          <li><code>dagrun_timeout</code> set — no zombie pipeline runs</li>
+          <li>All I/O inside callables — nothing at module level</li>
+          <li>Use <code>{{ ds }}</code>, never <code>datetime.now()</code> in task logic</li>
+          <li>Tasks are idempotent — proven via "run twice" test</li>
+          <li><code>retries</code> and <code>retry_delay</code> set for transient failures</li>
+          <li><code>doc_md</code> with owner + runbook link</li>
+          <li>CI test suite passes: no import errors, no cycles</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:.75rem;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Infrastructure</p>
+        <ul class="chk" style="gap:7px;">
+          <li>PostgreSQL metadata DB — never SQLite</li>
+          <li><code>AIRFLOW__CORE__FERNET_KEY</code> set — credentials encrypted at rest</li>
+          <li>Credentials in secrets backend — not the metadata DB</li>
+          <li>CeleryExecutor or KubernetesExecutor — never LocalExecutor at scale</li>
+          <li>Remote logging to S3/GCS — workers are ephemeral</li>
+          <li>Scheduler heartbeat monitored with alerting</li>
+          <li><code>on_failure_callback</code> set for all critical DAGs</li>
+          <li>SLAs defined on time-sensitive pipelines</li>
+          <li>All sensors use <code>mode='reschedule'</code></li>
+          <li>Worker memory provisioned with headroom for peak tasks</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE GRID -->
+  <div class="card">
+    <div class="lbl la-lbl">Quick reference — patterns you use every week</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px;">
+      <div>
+        <p style="font-size:.69rem;font-weight:700;color:var(--air);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Minimal DAG skeleton</p>
+        <div class="cb" style="margin:0;font-size:.69rem;white-space:pre-wrap;overflow-x:hidden;"><span class="de">@dag</span>(
+    schedule=<span class="st">'@daily'</span>,
+    start_date=datetime(<span class="nu">2024</span>,<span class="nu">1</span>,<span class="nu">1</span>),
+    catchup=<span class="kw">False</span>,
+    max_active_runs=<span class="nu">1</span>,
+    dagrun_timeout=timedelta(hours=<span class="nu">2</span>),
+    default_args={
+        <span class="st">'retries'</span>: <span class="nu">2</span>,
+        <span class="st">'retry_delay'</span>: timedelta(minutes=<span class="nu">5</span>),
+        <span class="st">'on_failure_callback'</span>: on_failure,
+    },
+    tags=[<span class="st">'team'</span>, <span class="st">'domain'</span>, <span class="st">'daily'</span>],
+)
+<span class="kw">def</span> <span class="fn">my_dag</span>(): ...</div>
+      </div>
+
+      <div>
+        <p style="font-size:.69rem;font-weight:700;color:var(--gold);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Jinja template variables</p>
+        <div class="cb" style="margin:0;font-size:.69rem;white-space:pre-wrap;overflow-x:hidden;">{{ ds }}            <span class="cm"># 2024-01-15</span>
+{{ ds_nodash }}     <span class="cm"># 20240115</span>
+{{ ts }}            <span class="cm"># 2024-01-15T06:00:00</span>
+{{ macros.ds_add(ds, -1) }}  <span class="cm"># yesterday</span>
+{{ data_interval_start }}
+{{ data_interval_end }}
+{{ dag.dag_id }}
+{{ run_id }}
+{{ var.value.my_key }}
+{{ conn.postgres_dwh.host }}</div>
+      </div>
+
+      <div>
+        <p style="font-size:.69rem;font-weight:700;color:var(--teal);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Dynamic task mapping</p>
+        <div class="cb" style="margin:0;font-size:.69rem;white-space:pre-wrap;overflow-x:hidden;"><span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">get_files</span>() -> list[str]:
+    <span class="kw">return</span> list_s3(<span class="st">"s3://landing/{{ ds }}/"</span>)
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">process</span>(path: str) -> dict:
+    <span class="kw">return</span> run(path)
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">agg</span>(results: list[dict]): ...
+
+files = <span class="fn">get_files</span>()
+r = process.<span class="fn">expand</span>(path=files)
+<span class="fn">agg</span>(r)</div>
+      </div>
+
+      <div>
+        <p style="font-size:.69rem;font-weight:700;color:var(--purple);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Branch + join (correct)</p>
+        <div class="cb" style="margin:0;font-size:.69rem;white-space:pre-wrap;overflow-x:hidden;"><span class="de">@task.branch</span>
+<span class="kw">def</span> <span class="fn">route</span>() -> str:
+    <span class="kw">return</span> <span class="st">'a'</span> <span class="kw">if</span> condition <span class="kw">else</span> <span class="st">'b'</span>
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">a</span>(): ...
+
+<span class="de">@task</span>
+<span class="kw">def</span> <span class="fn">b</span>(): ...
+
+<span class="cm"># ← this trigger rule is mandatory</span>
+<span class="de">@task</span>(trigger_rule=<span class="st">'none_failed_min_one_success'</span>)
+<span class="kw">def</span> <span class="fn">finish</span>(): ...
+
+r = <span class="fn">route</span>()
+r >> [<span class="fn">a</span>(), <span class="fn">b</span>()]
+[<span class="fn">a</span>(), <span class="fn">b</span>()] >> <span class="fn">finish</span>()</div>
+      </div>
+
+      <div>
+        <p style="font-size:.69rem;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Idempotent write patterns</p>
+        <div class="cb" style="margin:0;font-size:.69rem;white-space:pre-wrap;overflow-x:hidden;"><span class="cm"># PostgreSQL upsert</span>
+cursor.execute(<span class="st">"""
+  INSERT INTO t (date, val)
+  VALUES (%(date)s, %(val)s)
+  ON CONFLICT (date)
+  DO UPDATE SET val=EXCLUDED.val
+"""</span>, {<span class="st">'date'</span>: ds, <span class="st">'val'</span>: v})
+
+<span class="cm"># S3 overwrite (safe by default)</span>
+df.to_parquet(<span class="st">f"s3://dw/date={ds}/data.parquet"</span>)
+
+<span class="cm"># Delete + Insert</span>
+conn.execute(
+    <span class="st">f"DELETE FROM t WHERE date='{ds}'"</span>)
+conn.execute(<span class="st">f"INSERT INTO t ..."</span>)</div>
+      </div>
+
+      <div>
+        <p style="font-size:.69rem;font-weight:700;color:var(--orange);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Dataset trigger pattern</p>
+        <div class="cb" style="margin:0;font-size:.69rem;white-space:pre-wrap;overflow-x:hidden;"><span class="kw">from</span> airflow.datasets <span class="kw">import</span> Dataset
+raw = Dataset(<span class="st">"s3://dw/raw/sales/"</span>)
+
+<span class="cm"># Upstream: mark dataset updated</span>
+<span class="de">@task</span>(outlets=[raw])
+<span class="kw">def</span> <span class="fn">ingest</span>(ds=<span class="kw">None</span>): write(ds)
+
+<span class="cm"># Downstream: fires automatically</span>
+<span class="de">@dag</span>(schedule=[raw], ...)
+<span class="kw">def</span> <span class="fn">transform</span>(): ...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:56px 20px 40px;border-top:1px solid var(--border);margin-top:32px;">
+  <div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:6px;color:var(--t1);">APACHE AIRFLOW</div>
+  <div style="font-size:.72rem;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;">airflow.apache.org &nbsp;·&nbsp; astronomer.io/docs &nbsp;·&nbsp; github.com/apache/airflow</div>
+  <div style="margin-top:16px;font-size:.72rem;color:var(--t3);font-family:'JetBrains Mono',monospace;font-style:italic;">"A junior knows how to write a Task. A senior knows how to keep the Worker from running out of memory."</div>
+</div>
+
+</div><!-- /outer card -->
+</div><!-- /wrap -->
+
+<script>
+// ── Smooth scroll ────────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// ── Active nav highlight ─────────────────────────────────────────
+const sections = document.querySelectorAll('.sec[id]');
+const navLinks  = document.querySelectorAll('.floatnav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.floatnav a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px' });
+sections.forEach(s => obs.observe(s));
+
+// ── Click-to-copy code blocks ────────────────────────────────────
+document.querySelectorAll('.cb').forEach(block => {
+  block.title = 'Click to copy';
+  block.addEventListener('click', () => {
+    navigator.clipboard.writeText(block.innerText).then(() => {
+      const flash = document.createElement('div');
+      flash.textContent = '✓ Copied';
+      flash.style.cssText = [
+        'position:absolute','inset:0','display:flex','align-items:center',
+        'justify-content:center','background:rgba(59,158,255,0.10)',
+        'border-radius:8px','font-family:"JetBrains Mono",monospace',
+        'font-size:.72rem','font-weight:700','color:var(--air)',
+        'pointer-events:none','opacity:0','transition:opacity .15s'
+      ].join(';');
+      block.style.position = 'relative';
+      block.appendChild(flash);
+      requestAnimationFrame(() => flash.style.opacity = '1');
+      setTimeout(() => { flash.style.opacity='0'; setTimeout(() => flash.remove(), 200); }, 800);
+    });
+  });
+});
+
+// ── Back to top ──────────────────────────────────────────────────
+var btn = document.createElement('button');
+btn.innerHTML = '↑';
+btn.title = 'Back to top';
+btn.style.cssText = [
+  'position:fixed','bottom:28px','right:28px','width:40px','height:40px',
+  'border-radius:999px','background:var(--air)','color:#000','border:none',
+  'font-size:1rem','font-weight:800','cursor:pointer',
+  'box-shadow:0 4px 20px rgba(59,158,255,0.4)','opacity:0',
+  'transform:translateY(8px)','transition:opacity .2s,transform .2s',
+  'z-index:999','font-family:"JetBrains Mono",monospace'
+].join(';');
+document.body.appendChild(btn);
+btn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('scroll', () => {
+  const show = window.scrollY > 400;
+  btn.style.opacity = show ? '1' : '0';
+  btn.style.transform = show ? 'translateY(0)' : 'translateY(8px)';
+}, {passive:true});
+</script>
+</body>
+</html>
