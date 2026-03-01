@@ -8,18 +8,18 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#1d4ed8;--blue-lt:rgba(29,78,216,0.04);--blue-bd:rgba(29,78,216,0.20);--nav-hl:rgba(29,78,216,0.18);
-  --teal:#0d9488;--teal-lt:rgba(13,148,136,0.04);--teal-bd:rgba(13,148,136,0.22);
-  --violet:#7c3aed;--violet-lt:rgba(124,58,237,0.04);--violet-bd:rgba(124,58,237,0.22);
-  --amber:#d97706;--amber-lt:rgba(217,119,6,0.04);--amber-bd:rgba(217,119,6,0.22);
-  --rose:#e11d48;--rose-lt:rgba(225,29,72,0.03);--rose-bd:rgba(225,29,72,0.20);
-  --green:#16a34a;--green-lt:rgba(22,163,74,0.04);--green-bd:rgba(22,163,74,0.22);
-  --orange:#ea580c;--orange-lt:rgba(234,88,12,0.04);--orange-bd:rgba(234,88,12,0.22);
-  --sky:#0284c7;--sky-lt:rgba(2,132,199,0.04);--sky-bd:rgba(2,132,199,0.22);
-  --pink:#be185d;--pink-lt:rgba(190,24,93,0.03);--pink-bd:rgba(190,24,93,0.20);
-  --indigo:#4338ca;--indigo-lt:rgba(67,56,202,0.04);--indigo-bd:rgba(67,56,202,0.22);
+  --blue:#1d4ed8;--blue-lt:rgba(255,255,255,0.93);--blue-bd:rgba(29,78,216,0.20);--nav-hl:rgba(29,78,216,0.18);
+  --teal:#0d9488;--teal-lt:rgba(255,255,255,0.93);--teal-bd:rgba(13,148,136,0.22);
+  --violet:#7c3aed;--violet-lt:rgba(255,255,255,0.93);--violet-bd:rgba(124,58,237,0.22);
+  --amber:#d97706;--amber-lt:rgba(255,255,255,0.93);--amber-bd:rgba(217,119,6,0.22);
+  --rose:#e11d48;--rose-lt:rgba(255,255,255,0.93);--rose-bd:rgba(225,29,72,0.20);
+  --green:#16a34a;--green-lt:rgba(255,255,255,0.93);--green-bd:rgba(22,163,74,0.22);
+  --orange:#ea580c;--orange-lt:rgba(255,255,255,0.93);--orange-bd:rgba(234,88,12,0.22);
+  --sky:#0284c7;--sky-lt:rgba(255,255,255,0.93);--sky-bd:rgba(2,132,199,0.22);
+  --pink:#be185d;--pink-lt:rgba(255,255,255,0.93);--pink-bd:rgba(190,24,93,0.20);
+  --indigo:#4338ca;--indigo-lt:rgba(255,255,255,0.93);--indigo-bd:rgba(67,56,202,0.22);
   --ink:#07090f;--ink2:#1a2235;--ink3:#4a5568;--ink4:#8896aa;
-  --surface:rgba(255,255,255,0.80);--surface2:rgba(255,255,255,0.55);
+  --surface:rgba(255,255,255,0.93);--surface2:rgba(255,255,255,0.80);
   --bd:rgba(15,30,60,0.07);--bd2:rgba(15,30,60,0.13);
   --radius:18px;--radius-sm:11px;
   --font:'DM Sans',sans-serif;--display:'Instrument Sans','Inter',sans-serif;--mono:'JetBrains Mono',monospace;
@@ -221,7 +221,7 @@ body{
 
 /* ─── SECTION ─── */
 .section{
-  background:rgba(255,255,255,0.76);
+  background:rgba(255,255,255,0.92);
   backdrop-filter:blur(48px) saturate(150%);-webkit-backdrop-filter:blur(48px) saturate(150%);
   border:1px solid rgba(215,225,240,0.65);
   border-radius:28px;
@@ -323,7 +323,7 @@ body{
 .card{
   border-radius:var(--radius);
   border:1px solid rgba(215,225,240,0.70);
-  background:rgba(255,255,255,0.92);
+  background:rgba(255,255,255,0.97);
   box-shadow:0 2px 0 rgba(255,255,255,0.95) inset, 0 4px 20px rgba(15,30,80,0.05);
   padding:26px;transition:box-shadow .22s,transform .22s;
 }
@@ -2651,7 +2651,7 @@ id | city | valid_from | valid_to   | is_current
       <div class="badge po">PII Masking Patterns</div>
       <div class="card-title">&#x1F6E1;&#xFE0F; Protecting Sensitive Data in the Silver Layer</div>
       <p class="card-desc">The Silver layer is where you clean and conform raw data — and it's also where you apply <strong>PII masking and hashing</strong>. Never land raw PII in Gold tables that analysts query. The pattern: hash/tokenize in Silver, expose only what's needed in Gold.</p>
-      <div class="arch-row"><div class="arch-lbl" style="color:var(--amber)">Bronze</div><div class="arch-body">Raw PII arrives: <span class="ic">email = "alice@example.com"</span>, <span class="ic">phone = "+1-555-0100"</span>. Kept as-is — this is the source of truth. Access restricted to data engineers only.</div></div>
+      <div class="arch-row"><div class="arch-lbl" style="color:var(--amber)">Bronze</div><div class="arch-body">Raw PII arrives: <span class="ic">email = "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="13727f7a707653766b727e637f763d707c7e">[email&#160;protected]</a>"</span>, <span class="ic">phone = "+1-555-0100"</span>. Kept as-is — this is the source of truth. Access restricted to data engineers only.</div></div>
       <div class="arch-row"><div class="arch-lbl" style="color:var(--teal)">Silver</div><div class="arch-body">PII is <strong>masked or hashed</strong> on write. Analysts never query Silver directly. Pseudonymisation: replace PII with a stable token that links records without exposing the value.</div></div>
       <div class="arch-row" style="margin-bottom:0"><div class="arch-lbl" style="color:var(--green)">Gold</div><div class="arch-body">Only hashed tokens and derived attributes exposed. <span class="ic">email_hash</span> instead of <span class="ic">email</span>. GDPR erasure = delete from Bronze + invalidate token mapping.</div></div>
       <div class="code-wrap mt16">
@@ -3933,7 +3933,7 @@ resource <span class="str">"aws_s3_bucket_lifecycle_configuration"</span>
 <!-- ═══ BACK TO TOP ═══ -->
 <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── Catalog toggle ──
 function toggleCatalog() {
   const c = document.getElementById('catalog');
